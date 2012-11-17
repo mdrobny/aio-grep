@@ -2,7 +2,10 @@
 
 FileReader::FileReader(int argc, char **argv)
 {
-    for(int i = 1; i < argc; ++i)
+
+    regex = argv[1];
+
+    for(int i = 2; i < argc; ++i)
     {
         // TODO: Add check for directories
         std::string tmp(argv[i]);

@@ -7,11 +7,12 @@ SynchronousFileReader::SynchronousFileReader(int argc, char** argv) :
 {
 }
 
-ResultLine SynchronousFileReader::readLine()
+FileReader::ReadResult SynchronousFileReader::readLine(ResultLine &line)
 {
-    ResultLine line;
     if(!currentFile.is_open())
     {
+        if(fileList.size() == 0)
+            return FR_NO_MORE;
         currentFilename = fileList.back();
         fileList.pop_back();
         currentFile.open(currentFilename.c_str());
@@ -27,5 +28,7 @@ ResultLine SynchronousFileReader::readLine()
     {
         currentFile.close();
     }
-    return line;
+    if(strstr(line.getLine().c_str(), regex.c_str()) != 0)
+        return FR_GOOD;
+    else return FR_BAD;
 }

@@ -10,10 +10,22 @@ class FileReader
 {
 
 protected:
+    //! list of all files to be searched
     std::vector<std::string > fileList;
+
+    //! used temporarily as a substitude for real regex checking
+    std::string regex;
+
 public:
+    //! puts filenames passed in commandline into fileList vector
     FileReader(int argc, char** argv);
-    virtual ResultLine readLine() = 0;
+
+    //! indicates if the regex has been matched in current line
+    enum ReadResult { FR_GOOD, FR_BAD, FR_NO_MORE };
+
+    //! reads line and chechs if it maches regex, automatically opens files from fileList.
+    //! Files that have been processed are removed from fileList.
+    virtual ReadResult readLine(ResultLine& line) = 0;
     virtual ~FileReader();
 
 };
