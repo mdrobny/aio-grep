@@ -6,6 +6,7 @@
 
 #include "filereader.h"
 #include "ResultLine.h"
+#include <string.h>
 
 class SynchronousFileReader : public FileReader
 {
@@ -15,7 +16,7 @@ private:
     std::string currentFilename;
 public:
     SynchronousFileReader(int argc, char** argv);
-    ResultLine readLine();
+    ReadResult readLine(ResultLine& line);
 };
 
 #endif // SYNCHRONOUSFILEREADER_H
