@@ -23,9 +23,9 @@ std::string ResultLine::getLine() const
 }
 
 
-void ResultLine::addOccurence(std::pair<int, int> occ)
+void ResultLine::addOccurence(int_pair_t occ)
 {
-    occrurences.push_back(occ);
+    occurences.push_back(occ);
 }
 
 
@@ -35,7 +35,7 @@ void ResultLine::setLineNum(int n)
 }
 
 
-std::pair<int, int> ResultLine::getOccurence(int which) const
+int_pair_t ResultLine::getOccurence(int which) const
 {
     return occurences.at(which);
 }
@@ -44,4 +44,15 @@ std::pair<int, int> ResultLine::getOccurence(int which) const
 int ResultLine::getLineNum() const
 {
     return lineNum;
+}
+
+std::string ResultLine::getFilename()
+{
+    return filename;
+}
+
+
+void ResultLine::setFilename(std::string &filename)
+{
+   this->filename = filename;
 }
