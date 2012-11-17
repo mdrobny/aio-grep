@@ -1,10 +1,15 @@
 #include <iostream>
+#include "synchronousfilereader.h"
+#include "ResultLine.h"
 
-using namespace std;
-
-int main()
+int main(int argc, char** argv)
 {
-    cout << "Hello World!" << endl;
-    return 0;
+    SynchronousFileReader sfr(argc, argv);
+    for(int i=0; i < 100; ++i)
+    {
+        ResultLine l = sfr.readLine();
+        std::cout << "In file: " << l.getFilename() << "\n";
+        std::cout << l.getLineNum() << ":\t" << l.getLine() << "\n" << std::endl;
+    }
 }
 

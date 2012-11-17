@@ -1,5 +1,6 @@
 #include "asynchronousfilereader.h"
 
-AsynchronousFileReader::AsynchronousFileReader()
+AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv) :
+    FileReader(argc,argv)
 {
 }

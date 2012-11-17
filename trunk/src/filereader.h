@@ -9,10 +9,10 @@
 class FileReader
 {
 
-private:
+protected:
     std::vector<std::string > fileList;
 public:
-    virtual FileReader(char** argv);
+    FileReader(int argc, char** argv);
     virtual ResultLine readLine() = 0;
     virtual ~FileReader();
 
