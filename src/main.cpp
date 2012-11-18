@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include "synchronousfilereader.h"
 #include "ResultLine.h"
