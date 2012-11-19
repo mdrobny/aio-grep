@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "ResultLine.h"
+#include "resultline.h"
 
 class FileReader
 {

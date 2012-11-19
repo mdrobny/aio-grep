@@ -1,4 +1,4 @@
-#include "ResultLine.h"
+#include "resultline.h"
 
 ResultLine::ResultLine()
 {
