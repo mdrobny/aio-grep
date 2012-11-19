@@ -4,7 +4,6 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    src/ResultLine.cpp \
     src/filereader.cpp \
     src/asynchronousfilereader.cpp \
     src/synchronousfilereader.cpp \
