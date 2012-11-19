@@ -21,7 +21,7 @@ public:
     FileReader(int argc, char** argv);
 
     //! indicates if the regex has been matched in current line
-    enum ReadResult { FR_GOOD, FR_BAD, FR_NO_MORE };
+    enum ReadResult { FR_GOOD, FR_BAD, FR_NO_MORE, FR_OPEN_FAILED };
 
     //! reads line and chechs if it maches regex, automatically opens files from fileList.
     //! Files that have been processed are removed from fileList.

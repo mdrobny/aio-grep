@@ -7,7 +7,6 @@ FileReader::FileReader(int argc, char **argv)
 
     for(int i = 2; i < argc; ++i)
     {
-        // TODO: Add check for directories
         std::string tmp(argv[i]);
         fileList.push_back(tmp);
     }

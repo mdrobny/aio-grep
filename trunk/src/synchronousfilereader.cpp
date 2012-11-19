@@ -16,10 +16,14 @@ FileReader::ReadResult SynchronousFileReader::readLine(ResultLine &line)
         currentFilename = fileList.back();
         fileList.pop_back();
         currentFile.open(currentFilename.c_str());
+        line.setFilename(currentFilename);
+        if(!currentFile.good()) {
+            currentFile.close();
+            return FR_OPEN_FAILED;
+         }
         currentLine = 0;
     }
 
-    line.setFilename(currentFilename);
     std::string tmp_line;
     std::getline(currentFile, tmp_line);
     line.setLine(tmp_line);
