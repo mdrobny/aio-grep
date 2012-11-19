@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "synchronousfilereader.h"
-#include "ResultLine.h"
+#include "resultline.h"
 
 int main(int argc, char** argv)
 {

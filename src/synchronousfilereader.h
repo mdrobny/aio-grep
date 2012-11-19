@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include "filereader.h"
-#include "ResultLine.h"
+#include "resultline.h"
 #include <string.h>
 
 class SynchronousFileReader : public FileReader

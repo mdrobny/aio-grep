@@ -1,8 +1,8 @@
-# 5a402f5258a93cb590aad0869dbdc3bf
+# b17b325250bc53b7e8a3ce1f7756e6c3
 CFLAGS=-O$(O) 
 O=2
 LFLAGS=-lrt
-OBJS=objs/main.o objs/ResultLine.o objs/filereader.o objs/synchronousfilereader.o objs/asynchronousfilereader.o
+OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/synchronousfilereader.o objs/asynchronousfilereader.o
 
 
 .PHONY: all
@@ -12,22 +12,22 @@ all: objs aio-grep
 	@ echo "    LINK ./aio-grep"
 	@ $(CXX) $(OBJS) -o "./aio-grep" $(LFLAGS)
 
+objs/resultline.o: src/resultline.cpp src/resultline.h
+	@ echo "    CXX  src/resultline.cpp"
+	@ $(CXX) $(CFLAGS) -c "src/resultline.cpp" -o $@
 objs/main.o: src/main.cpp src/synchronousfilereader.h src/filereader.h \
- src/ResultLine.h
+ src/resultline.h
 	@ echo "    CXX  src/main.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/main.cpp" -o $@
-objs/ResultLine.o: src/ResultLine.cpp src/ResultLine.h
-	@ echo "    CXX  src/ResultLine.cpp"
-	@ $(CXX) $(CFLAGS) -c "src/ResultLine.cpp" -o $@
-objs/filereader.o: src/filereader.cpp src/filereader.h src/ResultLine.h
+objs/filereader.o: src/filereader.cpp src/filereader.h src/resultline.h
 	@ echo "    CXX  src/filereader.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/filereader.cpp" -o $@
 objs/synchronousfilereader.o: src/synchronousfilereader.cpp \
- src/synchronousfilereader.h src/filereader.h src/ResultLine.h
+ src/synchronousfilereader.h src/filereader.h src/resultline.h
 	@ echo "    CXX  src/synchronousfilereader.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/synchronousfilereader.cpp" -o $@
 objs/asynchronousfilereader.o: src/asynchronousfilereader.cpp \
- src/asynchronousfilereader.h src/filereader.h src/ResultLine.h
+ src/asynchronousfilereader.h src/filereader.h src/resultline.h
 	@ echo "    CXX  src/asynchronousfilereader.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/asynchronousfilereader.cpp" -o $@
 
