@@ -28,6 +28,8 @@ public:
     int getLineNum() const;
     std::string getFilename();
     void setFilename(std::string& filename);
+    int getNumberOfOccurences();
+    void clear();
 };
 
 #endif

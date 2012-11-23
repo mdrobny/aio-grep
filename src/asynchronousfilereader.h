@@ -7,7 +7,7 @@
 class AsynchronousFileReader : public FileReader
 {
 public:
-    AsynchronousFileReader(int argc, char** argv);
+    AsynchronousFileReader(int argc, char** argv, RegexFinder *&rf);
 };
 
 #endif // ASYNCHRONOUSFILEREADER_H

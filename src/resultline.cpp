@@ -37,7 +37,7 @@ void ResultLine::setLineNum(int n)
 
 int_pair_t ResultLine::getOccurence(int which) const
 {
-    return occurences.at(which);
+    return occurences[which];
 }
 
 
@@ -54,5 +54,18 @@ std::string ResultLine::getFilename()
 
 void ResultLine::setFilename(std::string &filename)
 {
-   this->filename = filename;
+    this->filename = filename;
+}
+
+int ResultLine::getNumberOfOccurences()
+{
+    return occurences.size();
+}
+
+void ResultLine::clear()
+{
+    occurences.clear();
+    line.clear();
+    lineNum = 0;
+    filename = "";
 }
