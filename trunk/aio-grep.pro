@@ -8,12 +8,16 @@ SOURCES += main.cpp \
     src/asynchronousfilereader.cpp \
     src/synchronousfilereader.cpp \
     src/main.cpp \
-    src/resultline.cpp
+    src/resultline.cpp \
+    src/regexfinder.cpp \
+    src/dummyregexfinder.cpp
 
 HEADERS += \
     src/ResultLine.h \
     src/filereader.h \
     src/asynchronousfilereader.h \
     src/synchronousfilereader.h \
-    src/resultline.h
+    src/resultline.h \
+    src/regexfinder.h \
+    src/dummyregexfinder.h
 

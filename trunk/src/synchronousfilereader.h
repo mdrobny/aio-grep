@@ -15,7 +15,7 @@ private:
     int currentLine;
     std::string currentFilename;
 public:
-    SynchronousFileReader(int argc, char** argv);
+    SynchronousFileReader(int argc, char** argv, RegexFinder*& rf);
     ReadResult readLine(ResultLine& line);
 };
 

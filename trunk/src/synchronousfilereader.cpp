@@ -1,7 +1,7 @@
 #include "synchronousfilereader.h"
 
-SynchronousFileReader::SynchronousFileReader(int argc, char** argv) :
-    FileReader(argc, argv),
+SynchronousFileReader::SynchronousFileReader(int argc, char** argv, RegexFinder *&rf) :
+    FileReader(argc, argv, rf),
     currentFile(0),
     currentLine(0)
 {
@@ -9,6 +9,7 @@ SynchronousFileReader::SynchronousFileReader(int argc, char** argv) :
 
 FileReader::ReadResult SynchronousFileReader::readLine(ResultLine &line)
 {
+    line.clear();
     if(!currentFile.is_open())
     {
         if(fileList.size() == 0)
@@ -16,7 +17,6 @@ FileReader::ReadResult SynchronousFileReader::readLine(ResultLine &line)
         currentFilename = fileList.back();
         fileList.pop_back();
         currentFile.open(currentFilename.c_str());
-        line.setFilename(currentFilename);
         if(!currentFile.good()) {
             currentFile.close();
             return FR_OPEN_FAILED;
@@ -26,13 +26,14 @@ FileReader::ReadResult SynchronousFileReader::readLine(ResultLine &line)
 
     std::string tmp_line;
     std::getline(currentFile, tmp_line);
+    line.setFilename(currentFilename);
     line.setLine(tmp_line);
     line.setLineNum(++currentLine);
     if(!currentFile.good())
     {
         currentFile.close();
     }
-    if(strstr(line.getLine().c_str(), regex.c_str()) != 0)
+    if(regexFinder->checkLine(line) == true)
         return FR_GOOD;
     else return FR_BAD;
 }
