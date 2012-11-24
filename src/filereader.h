@@ -18,6 +18,8 @@ protected:
     RegexFinder* regexFinder;
 
 public:
+    //! empty constructor
+    FileReader(){}
     //! puts filenames passed in commandline into fileList vector
     FileReader(int argc, char** argv, RegexFinder*& rf);
 
