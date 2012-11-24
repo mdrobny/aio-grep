@@ -10,7 +10,8 @@ SOURCES += main.cpp \
     src/main.cpp \
     src/resultline.cpp \
     src/regexfinder.cpp \
-    src/dummyregexfinder.cpp
+    src/dummyregexfinder.cpp \
+    src/fileinfo.cpp
 
 HEADERS += \
     src/ResultLine.h \
@@ -19,5 +20,6 @@ HEADERS += \
     src/synchronousfilereader.h \
     src/resultline.h \
     src/regexfinder.h \
-    src/dummyregexfinder.h
+    src/dummyregexfinder.h \
+    src/fileinfo.h
 

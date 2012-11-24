@@ -2,7 +2,7 @@
 CFLAGS=-O$(O) 
 O=2
 LFLAGS=-lrt
-OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/asynchronousfilereader.o objs/regexfinder.o
+OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/asynchronousfilereader.o objs/regexfinder.o objs/fileinfo.o
 
 
 .PHONY: all
@@ -40,6 +40,9 @@ objs/asynchronousfilereader.o: src/asynchronousfilereader.cpp \
 objs/regexfinder.o: src/regexfinder.cpp src/regexfinder.h src/resultline.h
 	@ echo "    CXX  src/regexfinder.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/regexfinder.cpp" -o $@
+objs/fileinfo.o: src/fileinfo.cpp src/fileinfo.h src/fileinfo.h
+	@ echo "    CXX  src/fileinfo.cpp"
+	@ $(CXX) $(CFLAGS) -c "src/fileinfo.cpp" -o $@
 
 objs:
 	@ mkdir "objs"
