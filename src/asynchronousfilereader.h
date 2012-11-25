@@ -14,10 +14,15 @@ class AsynchronousFileReader : public FileReader
 {
     list<FileInfo> fileList;
     int bufsize = 100;
+    FileInfo * currentFile = NULL;
+
+    string openBuf(FileInfo fInfo);
+    string getLineFromBuf();
 public:
     AsynchronousFileReader(int argc, char** argv, RegexFinder *&rf);
     void changeBufsize(int s){ bufsize = s;}
     ReadResult readLine(ResultLine& line);
+
 };
 
 #endif // ASYNCHRONOUSFILEREADER_H

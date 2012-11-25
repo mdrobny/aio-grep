@@ -6,11 +6,20 @@ using namespace std;
 
 class FileInfo
 {
+    size_t next = -1;
     string fileName;
-    long actLine;
+    long currentLine = 0;
     aiocb * aioControl;
+    string bufRest = "";
 public:
+    void setBufRest(string s) { bufRest = s;}
+    void setNext(int i) { next = i;}
+    int getNext() {return next;}
+    void plusLine() { ++currentLine;}
+    long getCurrentLine() {return currentLine;}
+    string getName() {return fileName; }
     FileInfo(string name, aiocb * aioC);
+    aiocb * getControl() { return aioControl; }
 };
 
 #endif // FILEINFO_H
