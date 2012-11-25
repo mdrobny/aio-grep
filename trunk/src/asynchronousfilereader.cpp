@@ -32,3 +32,60 @@ AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinde
     if (ret < 0)
         cout << "reading error in asynchronous reader\n";
 }
+
+FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
+{
+    /*
+     *TO-DO czytanie z obecnie otwartego bufora
+     **/
+    list<FileInfo>::iterator it;
+    it = fileList.begin();
+    while ( !fileList.empty() ){
+        aiocb * ctrl = it->getControl();
+        if ( aio_error(ctrl) == EINPROGRESS){
+        }
+        else{
+            if (int ret = aio_return(ctrl) > 0){
+                /*
+                 *TO-DO wrzucenie lini do ResultLine
+                 **/
+
+            } else {
+                fileList.erase(it);
+                it = fileList.begin();
+            }
+        }
+        ++it;
+        if (it == fileList.end())
+            it = fileList.begin();
+    }
+}
+
+string AsynchronousFileReader::openBuf(FileInfo fInfo)
+{
+    currentFile = & fInfo;
+    return getLineFromBuf();
+
+
+}
+
+string AsynchronousFileReader::getLineFromBuf()
+{
+    string buf( (char *) currentFile->getControl()->aio_buf, bufsize);
+
+    string del = "\n";
+    size_t next = currentFile->getNext();
+    size_t current = next + 1;
+    next = buf.find_first_of( del, current );
+    currentFile->setNext(next);
+    if (next == string::npos){
+        currentFile->setBufRest(buf.substr( current, bufsize ));
+        currentFile->setNext(-1);
+        currentFile = NULL;
+    }else{
+        /*
+         *TO-DO inkrementacja lini i wszyskto co powinno tu być...
+         **/
+        return buf.substr( current, next - current );
+    }
+}
