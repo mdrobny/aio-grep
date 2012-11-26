@@ -4,7 +4,6 @@ ResultLine::ResultLine()
 {
 }
 
-
 void ResultLine::setLine(std::string &str)
 {
     line = str;
