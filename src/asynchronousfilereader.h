@@ -10,13 +10,15 @@
 #include <cerrno>
 #include <cstring>
 
+typedef std::pair<int, int> int_pair_t;
+
 class AsynchronousFileReader : public FileReader
 {
     list<FileInfo> fileList;
     int bufsize = 100;
     FileInfo * currentFile = NULL;
 
-    string openBuf(FileInfo fInfo);
+    string openBuf(FileInfo fInfo, int ret);
     string getLineFromBuf();
 public:
     AsynchronousFileReader(int argc, char** argv, RegexFinder *&rf);
