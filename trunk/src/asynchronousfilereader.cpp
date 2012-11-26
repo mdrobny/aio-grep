@@ -1,7 +1,8 @@
 #include "asynchronousfilereader.h"
 
-AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder*& rf) : currentFile(NULL), regexFinder(rf)
+AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(100)
 {
+    regexFinder = rf;
     aiocb * list[argc-2];
     bzero( (char *)list, sizeof(list) );
 
