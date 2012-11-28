@@ -9,6 +9,7 @@
 #include <aio.h>
 #include <cerrno>
 #include <cstring>
+#include <fcntl.h>
 
 typedef std::pair<int, int> int_pair_t;
 

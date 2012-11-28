@@ -6,9 +6,12 @@
 
 class DummyRegexFinder : public RegexFinder
 {
+    private:
+        std::string rgx;
 public:
     DummyRegexFinder();
     bool checkLine(ResultLine &line);
+    void setRegex(std::string str);
 
 };
 
