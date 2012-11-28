@@ -2,6 +2,7 @@
 #define FILEINFO_H
 #include <iostream>
 #include <aio.h>
+#include <stdlib.h>
 using namespace std;
 
 class FileInfo
@@ -26,6 +27,7 @@ public:
     long getCurrentLine() {return currentLine;}
     string & getName() {return fileName; }
     FileInfo(string name, aiocb * aioC);
+    ~FileInfo();
     aiocb * getControl() { return aioControl; }
 };
 
