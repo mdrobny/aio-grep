@@ -3,11 +3,12 @@
 
 #include "resultline.h"
 #include <string>
+#include <regex>
 
 class RegexFinder
 {
 protected:
-    std::string regex;
+    std::regex regex;
 public:
     RegexFinder();
     RegexFinder(std::string r);
