@@ -12,7 +12,10 @@ class FileInfo
     int bufLength;
     aiocb * aioControl;
     string bufRest;
+    bool eof;
 public:
+    void setEof() { eof = true;  }
+    bool isEof() { return eof;}
     void setBufLength(int bL) { bufLength = bL;}
     int getBufLength() { return bufLength;}
     void setBufRest(string s) { bufRest = s;}
