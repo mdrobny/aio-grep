@@ -1,36 +1,41 @@
 #include "asynchronousfilereader.h"
 
-AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(100)
+AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(200)
 {
     regexFinder = rf;
-    aiocb * list[argc-2];
-    bzero( (char *)list, sizeof(list) );
+    aioList = (aiocb **) malloc((argc-2)*sizeof(aiocb *));
+    bzero( (char *)aioList, (argc-2) );
     for (int i = 2 ; i < argc ; ++i){
         //! initializing aiocb for file
-        aiocb fileC;
+        aiocb * fileC = (aiocb *) malloc( sizeof(aiocb));
         int fd = open(argv[i], O_RDONLY);
         if (fd < 0){
             cout << "opening error in file" << argv[i] <<"\n";
             continue;
         }
-        bzero( (char *)&fileC, sizeof(struct aiocb) );
-        fileC.aio_buf = new char[bufsize];
-        if (!fileC.aio_buf){
+        bzero( (char *)fileC, sizeof(struct aiocb) );
+        fileC->aio_buf = new char[bufsize];
+        if (!fileC->aio_buf){
             cout << "allocation error in file" << argv[i] <<"\n";
             continue;
         }
-        fileC.aio_fildes = fd;
-        fileC.aio_nbytes = bufsize;
-        fileC.aio_offset = 0;
-        fileC.aio_lio_opcode = LIO_READ;
+        fileC->aio_fildes = fd;
+        fileC->aio_nbytes = bufsize;
+        fileC->aio_offset = 0;
+        fileC->aio_lio_opcode = LIO_READ;
 
-        list[i-2] = &fileC;
-        FileInfo * file = new FileInfo(argv[i], &fileC);
+        aioList[i-2] = fileC;
+        FileInfo * file = new FileInfo(argv[i], fileC);
         fileList.push_back(*file);
     }
-    int ret = lio_listio(LIO_NOWAIT, list, argc-2, NULL );
+    int ret = lio_listio(LIO_NOWAIT, aioList, argc-2, NULL );
     if (ret < 0)
         cout << "reading error in asynchronous reader\n";
+}
+
+AsynchronousFileReader::~AsynchronousFileReader()
+{
+    free(aioList);
 }
 
 FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
@@ -62,10 +67,11 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
         else{
             cout << "w pętli znalazło przeczytany aiocb\n";
             if (int ret = aio_return(ctrl) > 0){
-                cout << ret << " w pętli \n";
+                cout << it->getName() << " " << ret << " w pętli \n";
                 string tmp = openBuf(*it, ret);
                 line.setLine(tmp);
                 line.setFilename(currentFile->getName());
+                cout << " w pętli po openBuf()\n";
                 //if ret < bufsize => eof, erasing file from list
                 if (ret < bufsize){
                     fileList.erase(it);
