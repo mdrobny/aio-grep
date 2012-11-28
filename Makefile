@@ -1,8 +1,8 @@
-# 8a989c0a10ffe535873a7f7a177f7d29
+# 4be817efee4ae6881d2410e41608e9e2
 CFLAGS=-O$(O) 
 O=2
-LFLAGS=-lrt -lboost_regex
-OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/regexfinder.o objs/boostregexfinder.o
+LFLAGS=-lrt
+OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/asynchronousfilereader.o objs/regexfinder.o
 
 
 .PHONY: all
@@ -16,8 +16,7 @@ objs/resultline.o: src/resultline.cpp src/resultline.h
 	@ echo "    CXX  src/resultline.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/resultline.cpp" -o $@
 objs/main.o: src/main.cpp src/synchronousfilereader.h src/filereader.h \
- src/resultline.h src/regexfinder.h src/dummyregexfinder.h \
- src/boostregexfinder.h
+ src/resultline.h src/regexfinder.h src/dummyregexfinder.h
 	@ echo "    CXX  src/main.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/main.cpp" -o $@
 objs/filereader.o: src/filereader.cpp src/filereader.h src/resultline.h \
@@ -33,21 +32,14 @@ objs/synchronousfilereader.o: src/synchronousfilereader.cpp \
  src/regexfinder.h
 	@ echo "    CXX  src/synchronousfilereader.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/synchronousfilereader.cpp" -o $@
-objs/fileinfo.o: src/fileinfo.cpp src/fileinfo.h
-	@ echo "    CXX  src/fileinfo.cpp"
-	@ $(CXX) $(CFLAGS) -c "src/fileinfo.cpp" -o $@
 objs/asynchronousfilereader.o: src/asynchronousfilereader.cpp \
  src/asynchronousfilereader.h src/filereader.h src/resultline.h \
- src/regexfinder.h src/fileinfo.h
+ src/regexfinder.h
 	@ echo "    CXX  src/asynchronousfilereader.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/asynchronousfilereader.cpp" -o $@
 objs/regexfinder.o: src/regexfinder.cpp src/regexfinder.h src/resultline.h
 	@ echo "    CXX  src/regexfinder.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/regexfinder.cpp" -o $@
-objs/boostregexfinder.o: src/boostregexfinder.cpp src/boostregexfinder.h \
- src/regexfinder.h src/resultline.h
-	@ echo "    CXX  src/boostregexfinder.cpp"
-	@ $(CXX) $(CFLAGS) -c "src/boostregexfinder.cpp" -o $@
 
 objs:
 	@ mkdir "objs"

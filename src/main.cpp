@@ -1,18 +1,10 @@
+
+
 #include <iostream>
 #include "synchronousfilereader.h"
-#include "asynchronousfilereader.h"
 #include "resultline.h"
 #include "regexfinder.h"
 #include "dummyregexfinder.h"
-#include "boostregexfinder.h"
-
-/// Regex testing defines, uncomment the one that is needed
-#define TEST_BOOSTREGEX
-//#define TEST_DUMMYREGEX
-
-/// File reader testing defines, uncomment the one that is needed
-//#define TEST_AIO
-#define TEST_SYNC
 
 int main(int argc, char** argv)
 {
@@ -21,25 +13,11 @@ int main(int argc, char** argv)
         std::cout << "Usage: " << argv[0] << " <regex> <files>" << std::endl;
         return 1;
     }
-
-#ifdef TEST_BOOSTREGEX
-    RegexFinder* rf = new BoostRegexFinder();
-#endif
-
-#ifdef TEST_DUMMYREGEX
-    RegexFinder* rg = new DummyRegexFinder();
-#endif
-
-#ifdef TEST_SYNC
-    SynchronousFileReader fr(argc, argv, rf);
-#endif
-
-#ifdef TEST_AIO
-    AsynchronousFileReader fr(argc, argv, rf);
-#endif
+    RegexFinder* rf = new DummyRegexFinder();
+    SynchronousFileReader sfr(argc, argv, rf);
     ResultLine l;
     FileReader::ReadResult r;
-    while((r = fr.readLine(l)) != FileReader::FR_NO_MORE)
+    while((r = sfr.readLine(l)) != FileReader::FR_NO_MORE)
     {
         if(r == FileReader::FR_GOOD) {
             std::cout << "In file: " << l.getFilename() << "\n";

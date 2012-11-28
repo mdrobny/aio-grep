@@ -6,10 +6,13 @@
 
 class RegexFinder
 {
+protected:
+    std::string regex;
 public:
     RegexFinder();
+    RegexFinder(std::string r);
     virtual bool checkLine(ResultLine& line) = 0;
-    virtual void setRegex(std::string r) = 0;
+    virtual void setRegex(std::string r);
     virtual ~RegexFinder();
 };
 
