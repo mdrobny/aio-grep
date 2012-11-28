@@ -1,8 +1,9 @@
 #include "dummyregexfinder.h"
 #include <iostream>
 
-DummyRegexFinder::DummyRegexFinder() : RegexFinder()
+DummyRegexFinder::DummyRegexFinder(std::string str) : RegexFinder()
 {
+    rgx = str;
 }
 
 bool DummyRegexFinder::checkLine(ResultLine &line)
