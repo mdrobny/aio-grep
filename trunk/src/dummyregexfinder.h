@@ -9,7 +9,7 @@ class DummyRegexFinder : public RegexFinder
     private:
         std::string rgx;
 public:
-    DummyRegexFinder();
+    DummyRegexFinder(std::string str);
     virtual bool checkLine(ResultLine &line);
     virtual void setRegex(std::string str);
 
