@@ -3,17 +3,13 @@
 
 #include "resultline.h"
 #include <string>
-#include <regex>
 
 class RegexFinder
 {
-protected:
-    std::regex regex;
 public:
     RegexFinder();
-    RegexFinder(std::string r);
     virtual bool checkLine(ResultLine& line) = 0;
-    virtual void setRegex(std::string r);
+    virtual void setRegex(std::string r) = 0;
     virtual ~RegexFinder();
 };
 

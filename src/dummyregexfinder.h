@@ -10,8 +10,8 @@ class DummyRegexFinder : public RegexFinder
         std::string rgx;
 public:
     DummyRegexFinder();
-    bool checkLine(ResultLine &line);
-    void setRegex(std::string str);
+    virtual bool checkLine(ResultLine &line);
+    virtual void setRegex(std::string str);
 
 };
 

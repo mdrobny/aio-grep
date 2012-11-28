@@ -5,7 +5,7 @@
 #include "resultline.h"
 #include "regexfinder.h"
 #include "dummyregexfinder.h"
-#include "cpp11regexfinder.h"
+#include "boostregexfinder.h"
 
 int main(int argc, char** argv)
 {
@@ -14,7 +14,7 @@ int main(int argc, char** argv)
         std::cout << "Usage: " << argv[0] << " <regex> <files>" << std::endl;
         return 1;
     }
-    RegexFinder* rf = new Cpp11RegexFinder();
+    RegexFinder* rf = new BoostRegexFinder();
     SynchronousFileReader sfr(argc, argv, rf);
     ResultLine l;
     FileReader::ReadResult r;
