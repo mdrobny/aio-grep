@@ -2,35 +2,51 @@
 
 AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(200)
 {
+    argc = 4;
     regexFinder = rf;
     aioList = (aiocb **) malloc((argc-2)*sizeof(aiocb *));
     bzero( (char *)aioList, (argc-2) );
     for (int i = 2 ; i < argc ; ++i){
         //! initializing aiocb for file
-        aiocb * fileC = (aiocb *) malloc( sizeof(aiocb));
+        aioList[i-2] = (aiocb *) malloc( sizeof(aiocb));
         int fd = open(argv[i], O_RDONLY);
         if (fd < 0){
             cout << "opening error in file" << argv[i] <<"\n";
             continue;
         }
-        bzero( (char *)fileC, sizeof(struct aiocb) );
-        fileC->aio_buf = new char[bufsize];
-        if (!fileC->aio_buf){
+        bzero( (char *)aioList[i-2], sizeof(struct aiocb) );
+        aioList[i-2]->aio_buf = new char[bufsize];
+        if (!aioList[i-2]->aio_buf){
             cout << "allocation error in file" << argv[i] <<"\n";
             continue;
         }
-        fileC->aio_fildes = fd;
-        fileC->aio_nbytes = bufsize;
-        fileC->aio_offset = 0;
-        fileC->aio_lio_opcode = LIO_READ;
+        aioList[i-2]->aio_fildes = fd;
+        aioList[i-2]->aio_nbytes = bufsize;
+        aioList[i-2]->aio_offset = 0;
+        aioList[i-2]->aio_lio_opcode = LIO_READ;
 
-        aioList[i-2] = fileC;
-        FileInfo * file = new FileInfo(argv[i], fileC);
+        FileInfo * file = new FileInfo(argv[i], aioList[i-2]);
         fileList.push_back(*file);
     }
-    int ret = lio_listio(LIO_NOWAIT, aioList, argc-2, NULL );
+    int ret = lio_listio(LIO_WAIT, aioList, argc-2, NULL );
     if (ret < 0)
         cout << "reading error in asynchronous reader\n";
+
+
+    //////debug
+    list<FileInfo>::iterator it;
+    for ( it = fileList.begin() ; it !=fileList.end() ; ++it){
+        aiocb * ctrl = it->getControl();
+        if ( aio_error( ctrl ) == EINPROGRESS ){}
+        else{
+            if ((ret = aio_return( ctrl )) > 0) {
+                cout << &(*it) << " <- adres aiocb czytanych znaków-> "<< ret << endl <<(char *) ctrl->aio_buf << endl;
+              } else {
+                cout << "failed";
+              }
+        }
+    }
+    ///////end
 }
 
 AsynchronousFileReader::~AsynchronousFileReader()
@@ -60,13 +76,17 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
     int i = 0;
     while ( !fileList.empty() ){
         aiocb * ctrl = it->getControl();
+            cout << "\t iter:"<< ++i << "\n";
         if ( aio_error(ctrl) == EINPROGRESS){
-            cout << ++i << "\n";
             continue;
         }
         else{
-            cout << "w pętli znalazło przeczytany aiocb\n";
-            if (int ret = aio_return(ctrl) > 0){
+           if (int ret = aio_return(it->getControl()) > 0){
+               cout<< ctrl << " <- adres aiocb fd->" << ctrl->aio_fildes << " czytanych znaków->" << ret << "\nw pętli znalazło przeczytany aiocb\n";
+                if(ret == 1){
+                    ++it;
+                    continue;
+                }
                 cout << it->getName() << " " << ret << " w pętli \n";
                 string tmp = openBuf(*it, ret);
                 line.setLine(tmp);
