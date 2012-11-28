@@ -5,7 +5,6 @@ AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinde
     regexFinder = rf;
     aiocb * list[argc-2];
     bzero( (char *)list, sizeof(list) );
-
     for (int i = 2 ; i < argc ; ++i){
         //! initializing aiocb for file
         aiocb fileC;
@@ -26,8 +25,8 @@ AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinde
         fileC.aio_lio_opcode = LIO_READ;
 
         list[i-2] = &fileC;
-        FileInfo file(argv[i], &fileC);
-        fileList.push_back(file);
+        FileInfo * file = new FileInfo(argv[i], &fileC);
+        fileList.push_back(*file);
     }
     int ret = lio_listio(LIO_NOWAIT, list, argc-2, NULL );
     if (ret < 0)
@@ -36,10 +35,12 @@ AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinde
 
 FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
 {
-    //jeśli jest jakiś otwarty bufor
+    //if there is any 'opened' buffer to read => read from it
     if (currentFile != NULL){
         string tmp = getLineFromBuf();
         line.setLine(tmp);
+        if (currentFile->isEof())
+            delete currentFile;
         if (regexFinder->checkLine(line) == true){
             line.setFilename(currentFile->getName());
             return FR_GOOD;
@@ -48,24 +49,35 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
         }
     }
 
-    //jeśli nie, to szuka pierwszego skończonego
+    //else find aiocb which completed reading, and 'open' this buffer
     list<FileInfo>::iterator it;
     it = fileList.begin();
+    int i = 0;
     while ( !fileList.empty() ){
         aiocb * ctrl = it->getControl();
         if ( aio_error(ctrl) == EINPROGRESS){
+            cout << ++i << "\n";
+            continue;
         }
         else{
+            cout << "w pętli znalazło przeczytany aiocb\n";
             if (int ret = aio_return(ctrl) > 0){
+                cout << ret << " w pętli \n";
                 string tmp = openBuf(*it, ret);
                 line.setLine(tmp);
+                line.setFilename(currentFile->getName());
+                //if ret < bufsize => eof, erasing file from list
+                if (ret < bufsize){
+                    fileList.erase(it);
+                }
                 if (regexFinder->checkLine(line) == true){
-                    line.setFilename(currentFile->getName());
                     return FR_GOOD;
                 } else {
                     return FR_BAD;
                 }
             } else {
+                cout << "usuwa\n";
+                delete &(*it);
                 fileList.erase(it);
                 it = fileList.begin();
             }
@@ -97,6 +109,16 @@ string AsynchronousFileReader::getLineFromBuf()
     if (next == string::npos){
         currentFile->setBufRest(buf.substr( current, bufsize ));
         currentFile->setNext(-1);
+        if(currentFile->getBufLength() < bufsize)
+            currentFile->setEof();
+        else {
+            //initializing next aio reading
+            aiocb * aio = currentFile->getControl();
+            int offset = aio->aio_offset;
+            aio->aio_offset = offset + bufsize;
+            bzero( (char *)&(aio->aio_buf), sizeof(char)*bufsize );
+            aio_read(aio);
+        }
         currentFile = NULL;
     }else{
         currentFile->plusLine();
