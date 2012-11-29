@@ -27,7 +27,7 @@ AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinde
         FileInfo * file = new FileInfo(argv[i], aioList[i-2]);
         fileList.push_back(*file);
     }
-    int ret = lio_listio(LIO_WAIT, aioList, argc-2, NULL );
+    int ret = lio_listio(LIO_NOWAIT, aioList, argc-2, NULL );
     if (ret < 0)
         cout << "reading error in asynchronous reader\n";
 }
@@ -41,10 +41,17 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
 {
     //if there is any 'opened' buffer to read => read from it
     if (currentFile != NULL){
+        std::cout << "czyta z otwartego\n";
         string tmp = getLineFromBuf();
+        if (tmp == ">>eob<<"){
+            std::cout << currentFile <<"koniec bufora2\n";
+            return FR_BAD;
+        }
         line.setLine(tmp);
-        if (currentFile->isEof())
-            delete currentFile;
+        if (currentFile->isEof()){
+            cout << "eof:  " << currentFile->isEof() << "  \n";
+            currentFile = NULL;
+        }
         if (regexFinder->checkLine(line) == true){
             line.setFilename(currentFile->getName());
             return FR_GOOD;
@@ -66,19 +73,16 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
         else{
            int ret = aio_return(it->getControl());
            if (ret > 0){
-                if(ret == 1){
-                    ++it;
-                    continue;
-                }
                 cout << it->getName() << " " << ret << " w pętli \n";
                 string tmp = openBuf(*it, ret);
-                cout << " w pętli po openBuf()\n";
+                if (tmp == ">>eob<<")
+                    return FR_BAD;
                 line.setLine(tmp);
                 line.setFilename(currentFile->getName());
-                //if ret < bufsize => eof, erasing file from list
-                if (ret < bufsize){
-                    cout << "\t\terase\n";
+                //if eof => eof, erasing file from list
+                if (it->isEof()){
                     fileList.erase(it);
+                    delete currentFile;
                 }
                 if (regexFinder->checkLine(line) == true){
                     return FR_GOOD;
@@ -86,7 +90,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                     return FR_BAD;
                 }
             } else {
-                cout << "usuwa\n";
+               std::cout << "usuwamy ret = 0\n";
                 delete &(*it);
                 fileList.erase(it);
                 it = fileList.begin();
@@ -99,7 +103,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
     return FR_NO_MORE;
 }
 
-string AsynchronousFileReader::openBuf(FileInfo fInfo, int ret)
+string AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
 {
     currentFile = & fInfo;
     currentFile->setBufLength(ret);
@@ -108,7 +112,6 @@ string AsynchronousFileReader::openBuf(FileInfo fInfo, int ret)
 
 string AsynchronousFileReader::getLineFromBuf()
 {
-    cout << "getLineFromBuf()\n";
     //string o wielkości równej ilości znaków przeczytanych przez aio
     string buf( (char *) currentFile->getControl()->aio_buf, currentFile->getBufLength());
     buf = currentFile->getBufRest() + buf;
@@ -117,25 +120,31 @@ string AsynchronousFileReader::getLineFromBuf()
     size_t current = next + 1;
     next = buf.find_first_of( del, current );
     currentFile->setNext(next);
+    std::cout << "getLineFromBuf(): " << current << "  " << next << endl;
+    if(currentFile->getBufLength() == next && next < bufsize){
+        std::cout << "set eof next:" << next << " bufL: " << currentFile->getBufLength() << std::endl;
+        currentFile->setEof();
+    }
     if (next == string::npos){
+        std::cout << "koniec buffora\n";
         string restLine = buf.substr( current, bufsize );
         currentFile->setBufRest(restLine);
         currentFile->setNext(-1);
-        if(currentFile->getBufLength() < bufsize)
-            currentFile->setEof();
-        else {
-            //initializing next aio reading
-            aiocb * aio = currentFile->getControl();
-            int offset = aio->aio_offset;
-            aio->aio_offset = offset + bufsize;
-            bzero( (char *)&(aio->aio_buf), sizeof(char)*bufsize );
-            aio_read(aio);
-        }
+        //initializing next aio reading
+        startNextRead(currentFile->getControl());
         currentFile = NULL;
+        return ">>eob<<";
     }else{
         string retLine = buf.substr( current, next - current );
-        cout << retLine << "\n";
         currentFile->plusLine();
         return retLine;
     }
+}
+
+int AsynchronousFileReader::startNextRead(aiocb *aio)
+{
+    int offset = aio->aio_offset;
+    aio->aio_offset = offset + bufsize;
+    aio_read(aio);
+    std::cout << "aio_read\n";
 }
