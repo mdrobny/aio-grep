@@ -6,7 +6,6 @@ FileInfo::FileInfo(string name, aiocb * aioC) : fileName(name), aioControl(aioC)
 
 FileInfo::~FileInfo()
 {
-    std::cout << eof << " UMIERAM!! Byłem FileInfo:(\n";
     free((void *) (aioControl->aio_buf));
     free(aioControl);
 }
