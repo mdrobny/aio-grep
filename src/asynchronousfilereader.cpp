@@ -41,13 +41,13 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
 {
     //if there is any 'opened' buffer to read => read from it
     if (currentFile != NULL){
-        std::cout << "czyta z otwartego\n";
+        //std::cout << "czyta z otwartego\n";
         string tmp = getLineFromBuf();
         if (tmp == ">>eob<<"){
-            std::cout << currentFile <<"koniec bufora2\n";
             return FR_BAD;
         }
         line.setLine(tmp);
+        //std::cout << "eof = " << currentFile->isEof() << std::endl;
         if (currentFile->isEof()){
             cout << "eof:  " << currentFile->isEof() << "  \n";
             currentFile = NULL;
@@ -66,14 +66,14 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
     int i = 0;
     while ( !fileList.empty() ){
         aiocb * ctrl = it->getControl();
-            cout << "\t iter:"<< ++i << "\n";
+            //cout << "\t iter:"<< ++i << "\n";
         if ( aio_error(ctrl) == EINPROGRESS){
             continue;
         }
         else{
            int ret = aio_return(it->getControl());
            if (ret > 0){
-                cout << it->getName() << " " << ret << " w pętli \n";
+                //cout << it->getName() << " " << ret << " w pętli \n";
                 string tmp = openBuf(*it, ret);
                 if (tmp == ">>eob<<")
                     return FR_BAD;
@@ -82,7 +82,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                 //if eof => eof, erasing file from list
                 if (it->isEof()){
                     fileList.erase(it);
-                    delete currentFile;
+                    currentFile = NULL;
                 }
                 if (regexFinder->checkLine(line) == true){
                     return FR_GOOD;
@@ -90,8 +90,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                     return FR_BAD;
                 }
             } else {
-               std::cout << "usuwamy ret = 0\n";
-                delete &(*it);
+                //delete &(*it);
                 fileList.erase(it);
                 it = fileList.begin();
             }
@@ -120,13 +119,14 @@ string AsynchronousFileReader::getLineFromBuf()
     size_t current = next + 1;
     next = buf.find_first_of( del, current );
     currentFile->setNext(next);
-    std::cout << "getLineFromBuf(): " << current << "  " << next << endl;
+    //std::cout << "getLineFromBuf(): " << current << "  " << next << endl;
     if(currentFile->getBufLength() == next && next < bufsize){
-        std::cout << "set eof next:" << next << " bufL: " << currentFile->getBufLength() << std::endl;
+        //std::cout << "set eof next:" << next << " bufL: " << currentFile->getBufLength() << std::endl;
         currentFile->setEof();
+        //std::cout << currentFile->isEof() <<endl;
     }
-    if (next == string::npos){
-        std::cout << "koniec buffora\n";
+    if (next == string::npos || next > bufsize){
+        //std::cout << "koniec buffora\n";
         string restLine = buf.substr( current, bufsize );
         currentFile->setBufRest(restLine);
         currentFile->setNext(-1);
@@ -146,5 +146,5 @@ int AsynchronousFileReader::startNextRead(aiocb *aio)
     int offset = aio->aio_offset;
     aio->aio_offset = offset + bufsize;
     aio_read(aio);
-    std::cout << "aio_read\n";
+    //std::cout << "aio_read\n";
 }
