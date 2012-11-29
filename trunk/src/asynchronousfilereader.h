@@ -22,8 +22,9 @@ class AsynchronousFileReader : public FileReader
     int aiocbAmount;
     aiocb ** aioList;
 
-    string openBuf(FileInfo fInfo, int ret);
+    string openBuf(FileInfo & fInfo, int ret);
     string getLineFromBuf();
+    int startNextRead(aiocb * aio);
 public:
     AsynchronousFileReader(int argc, char** argv, RegexFinder *rf);
     ~AsynchronousFileReader();
