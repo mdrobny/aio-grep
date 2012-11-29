@@ -1,6 +1,6 @@
 #include "asynchronousfilereader.h"
 
-AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(200)
+AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(500)
 {
     regexFinder = rf;
     aioList = (aiocb **) malloc((argc-2)*sizeof(aiocb *));
@@ -39,6 +39,7 @@ AsynchronousFileReader::~AsynchronousFileReader()
 
 FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
 {
+    line.clear();
     //if there is any 'opened' buffer to read => read from it
     if (currentFile != NULL){
         //std::cout << "czyta z otwartego\n";
@@ -49,11 +50,12 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
         line.setLine(tmp);
         //std::cout << "eof = " << currentFile->isEof() << std::endl;
         if (currentFile->isEof()){
-            cout << "eof:  " << currentFile->isEof() << "  \n";
+            //cout << "eof:  " << currentFile->isEof() << "  \n";
             currentFile = NULL;
         }
         if (regexFinder->checkLine(line) == true){
             line.setFilename(currentFile->getName());
+            line.setLineNum(currentFile->getCurrentLine());
             return FR_GOOD;
         } else {
             return FR_BAD;
@@ -79,6 +81,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                     return FR_BAD;
                 line.setLine(tmp);
                 line.setFilename(currentFile->getName());
+                line.setLineNum(currentFile->getCurrentLine());
                 //if eof => eof, erasing file from list
                 if (it->isEof()){
                     fileList.erase(it);
@@ -137,6 +140,8 @@ string AsynchronousFileReader::getLineFromBuf()
     }else{
         string retLine = buf.substr( current, next - current );
         currentFile->plusLine();
+        //poniższa linia wypisuje na ekran kolejne zwracane linie
+        //std::cout << currentFile->getCurrentLine() << "\t" << retLine << std::endl;
         return retLine;
     }
 }
