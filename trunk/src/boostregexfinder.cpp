@@ -12,19 +12,17 @@ BoostRegexFinder::BoostRegexFinder(std::string r)
 
 bool BoostRegexFinder::checkLine(ResultLine& line)
 {
-    boost::smatch match;
+    boost::smatch match; //info about matches
     std::string str = line.getLine();
     bool found = false;
-    if( boost::regex_match(str, match, regex) == false)
+    if( boost::regex_search(str, match, regex) == false)
     {
         return found;
     }
-    int i=match.size();
-    while( i != 0 )
+    for(int i=match.size(); i != 0; --i)
     {
-        line.addOccurence(int_pair_t(match.position(i-1), match.position(i-1) + match.length(i-1)));
+        line.addOccurence(int_pair_t(match.position(i-1)+1, match.position(i-1) + match.length(i-1)+1));
         found = true;
-        --i;
     }
     return found;
 }

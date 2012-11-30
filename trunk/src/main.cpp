@@ -11,8 +11,8 @@
 //#define TEST_DUMMYREGEX
 
 /// File reader testing defines, uncomment the one that is needed
-//#define TEST_AIO
-#define TEST_SYNC
+#define TEST_AIO
+//#define TEST_SYNC
 
 int main(int argc, char** argv)
 {
@@ -23,11 +23,11 @@ int main(int argc, char** argv)
     }
 
 #ifdef TEST_BOOSTREGEX
-    RegexFinder* rf = new BoostRegexFinder();
+    RegexFinder* rf = new BoostRegexFinder(argv[1]);
 #endif
 
 #ifdef TEST_DUMMYREGEX
-    RegexFinder* rg = new DummyRegexFinder();
+    RegexFinder* rf = new DummyRegexFinder(argv[1]);
 #endif
 
 #ifdef TEST_SYNC
