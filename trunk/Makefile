@@ -2,7 +2,7 @@
 CFLAGS=-O$(O) 
 O=2
 LFLAGS=-lrt -lboost_regex
-OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/regexfinder.o objs/boostregexfinder.o
+OBJS=objs/resultline.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/regexfinder.o objs/boostregexfinder.o objs/output.o
 
 
 .PHONY: all
@@ -48,6 +48,10 @@ objs/boostregexfinder.o: src/boostregexfinder.cpp src/boostregexfinder.h \
  src/regexfinder.h src/resultline.h
 	@ echo "    CXX  src/boostregexfinder.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/boostregexfinder.cpp" -o $@
+objs/output.o: src/output.cpp src/output.h \
+ src/filereader.h src/resultline.h
+	@ echo "    CXX  src/output.cpp"
+	@ $(CXX) $(CFLAGS) -c "src/output.cpp" -o $@
 
 objs:
 	@ mkdir "objs"

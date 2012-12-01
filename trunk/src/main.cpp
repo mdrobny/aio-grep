@@ -2,17 +2,18 @@
 #include "synchronousfilereader.h"
 #include "asynchronousfilereader.h"
 #include "resultline.h"
+#include "output.h"
 #include "regexfinder.h"
 #include "dummyregexfinder.h"
 #include "boostregexfinder.h"
 
 /// Regex testing defines, uncomment the one that is needed
-#define TEST_BOOSTREGEX
-//#define TEST_DUMMYREGEX
+//#define TEST_BOOSTREGEX
+#define TEST_DUMMYREGEX
 
 /// File reader testing defines, uncomment the one that is needed
-#define TEST_AIO
-//#define TEST_SYNC
+//#define TEST_AIO
+#define TEST_SYNC
 
 int main(int argc, char** argv)
 {
@@ -22,6 +23,8 @@ int main(int argc, char** argv)
         return 1;
     }
 
+//TODO: flagi sync/async
+    //ja się tym zajmę, Drobny
 #ifdef TEST_BOOSTREGEX
     RegexFinder* rf = new BoostRegexFinder(argv[1]);
 #endif
@@ -37,26 +40,10 @@ int main(int argc, char** argv)
 #ifdef TEST_AIO
     AsynchronousFileReader fr(argc, argv, rf);
 #endif
-    ResultLine l;
-    FileReader::ReadResult r;
-    while((r = fr.readLine(l)) != FileReader::FR_NO_MORE)
-    {
-        if(r == FileReader::FR_GOOD) {
-            std::cout << "In file: " << l.getFilename() << "\n";
-            std::cout << l.getLineNum() << ":\t" << l.getLine() << "\n" << std::endl;
-            std::cout << l.getNumberOfOccurences() << " occurences between: \n";
-            for(int i=0; i < l.getNumberOfOccurences(); i++) {
-                int_pair_t o = l.getOccurence(i);
-                std::cout << o.first << " " << o.second << "\n";
-            }
-            std::cout << "\n" << std::endl;
-        }
-        else if (r == FileReader::FR_OPEN_FAILED)
-        {
-            std::cout << "ERROR: File open failed in file: " << l.getFilename() << std::endl;
-        }
-    }
+
+    Output output=Output('n',&fr);
+    output.printResults();
+
     delete rf;
     return 0;
 }
-
