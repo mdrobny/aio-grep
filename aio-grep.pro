@@ -13,7 +13,9 @@ SOURCES += main.cpp \
     src/dummyregexfinder.cpp \
     src/fileinfo.cpp \
     src/cpp11regexfinder.cpp \
-    src/boostregexfinder.cpp
+    src/boostregexfinder.cpp \
+    output.cpp \
+    src/output.cpp
 
 HEADERS += \
     src/ResultLine.h \
@@ -25,5 +27,7 @@ HEADERS += \
     src/dummyregexfinder.h \
     src/fileinfo.h \
     src/cpp11regexfinder.h \
-    src/boostregexfinder.h
+    src/boostregexfinder.h \
+    output.h \
+    src/output.h
 
