@@ -7,13 +7,14 @@
 class Output
 {
 public:
-    Output(char printTypeFlag, FileReader* fileReader);
+    Output(char printTypeFlag, FileReader* fileReader, std::string& fileReaderMethod);
     void printResults();
     ~Output();
 
 private:
     char printType;
     FileReader* fr;
+    std::string frMethod; //tests
     //std::string* colorList;
     //static int colorIt;
 
