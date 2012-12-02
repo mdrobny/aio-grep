@@ -10,9 +10,10 @@
 /*
  * Initializes colorList
  */
-Output::Output(char printTypeFlag,FileReader* fileReader) {
+Output::Output(char printTypeFlag,FileReader* fileReader, std::string& fileReaderMethod) {
     printType=printTypeFlag;
     fr=fileReader;
+    frMethod=fileReaderMethod;
     //colorList=new std::string[COLOR_AMOUNT];
     /*colorList[0]=RESET; colorList[1]=RED; colorList[2]=GREEN; colorList[3]=YELLOW;
     colorList[4]=BLUE;*/
@@ -29,10 +30,10 @@ Output::~Output(){
  */
 void Output::printResults(){
 
-    int_pair_t o; //pair of occurence
-    int_pair_t* occ; //array of pairs
-    size_t nr; //getNumberOfOccurences() value
-    int totalOcc=0; //total occurences amount
+    int_pair_t o;       //pair of occurence
+    int_pair_t* occ;    //array of pairs
+    size_t nr;          //getNumberOfOccurences() value
+    int totalOcc=0;     //total occurences amount
 
     ResultLine l;
     FileReader::ReadResult r;
@@ -41,7 +42,6 @@ void Output::printResults(){
             std::cout << "In file: " << l.getFilename() << "\n";
             nr=l.getNumberOfOccurences();
             totalOcc+=nr;
-            //std::cout<<l.getLine()<<std::endl;
 
             //if more than 1 occurence
             if(nr>1){
@@ -79,7 +79,9 @@ void Output::printResults(){
         }
     }
 
-    std::cout<<"Total occurence amount: "<< RED << totalOcc << RESET <<"\n"<<std::endl;
+    std::cout<<"SUMMARY:\n \t Total occurence amount: "<< RED << totalOcc << RESET <<"\n"
+            <<"\t Method used: "<< RED << frMethod<< RESET << "\n"
+            <<"\t Process time: "<<std::endl;
 
 }
 
