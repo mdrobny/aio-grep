@@ -1,4 +1,5 @@
 #include "output.h"
+#include <ios>
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -29,7 +30,7 @@ Output::~Output(){
  * typedef int_pair_t from ResultLine.h
  */
 void Output::printResults(){
-
+    std::ios_base::sync_with_stdio(false);
     int_pair_t o;       //pair of occurence
     int_pair_t* occ;    //array of pairs
     size_t nr;          //getNumberOfOccurences() value
@@ -60,7 +61,7 @@ void Output::printResults(){
                     else
                         std::cout<< l.getLine().substr(occ[i].second);
                 }
-                std::cout<<"\n"<<std::endl;
+                std::cout<<"\n";//<<std::endl;
 
                 delete occ;
             } else {
@@ -69,13 +70,13 @@ void Output::printResults(){
                 std::cout<< l.getLineNum() <<":\t"<< RESET
                          << l.getLine().substr(0,o.first) << RED
                          << l.getLine().substr(o.first,o.second-o.first) << RESET
-                         << l.getLine().substr(o.second) <<"\n"<<std::endl;
+                         << l.getLine().substr(o.second) <<"\n";//<<std::endl;
             }
-            std::cout << "\n" << std::endl;
+            std::cout << "\n";// << std::endl;
         }
         else if (r == FileReader::FR_OPEN_FAILED)
         {
-            std::cout << "ERROR: File open failed in file: " << l.getFilename() << std::endl;
+            std::cout << "ERROR: File open failed in file: " << l.getFilename();//<< std::endl;
         }
     }
 
