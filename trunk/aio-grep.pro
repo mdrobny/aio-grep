@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     src/boostregexfinder.cpp \
     output.cpp \
     src/output.cpp \
-    src/timer.cpp
+    src/timer.cpp \
+    src/re2regexfinder.cpp
 
 HEADERS += \
     src/ResultLine.h \
@@ -31,5 +32,6 @@ HEADERS += \
     src/boostregexfinder.h \
     output.h \
     src/output.h \
-    src/timer.h
+    src/timer.h \
+    src/re2regexfinder.h
 
