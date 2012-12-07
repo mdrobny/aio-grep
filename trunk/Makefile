@@ -1,5 +1,5 @@
 # f98bd3be6ef0b46df4cd0b35db20ec7b
-CFLAGS=-O3 
+CFLAGS=-O$(O)
 O=2
 LFLAGS=-lrt -lboost_regex -lre2
 OBJS=objs/resultline.o objs/timer.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/re2regexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/regexfinder.o objs/output.o objs/boostregexfinder.o
@@ -80,7 +80,7 @@ run: all
 
 .PHONY: d debug
 d: debug
-debug: CFLAGS += -DDEBUG -g3 -Wall -Wextra
+debug: CFLAGS += -DDEBUG -g3 -Wall -Wextra -pg
 debug: O=0
 debug: all
 
