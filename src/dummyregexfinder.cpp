@@ -19,6 +19,9 @@ bool DummyRegexFinder::checkLine(ResultLine &line)
     }
 
     return found;
+    //4 debug if u want to print every line to check if they are read correctly
+    //std::cout << str <<std::endl;
+    return false;
 }
 
 void DummyRegexFinder::setRegex(std::string str)

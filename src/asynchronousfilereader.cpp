@@ -1,6 +1,7 @@
 #include "asynchronousfilereader.h"
 
-AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf) : currentFile(NULL), bufsize(500)
+AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf)
+    : currentFile(NULL), bufsize(1000)
 {
     regexFinder = rf;
     aioList = (aiocb **) malloc((argc-2)*sizeof(aiocb *));
@@ -60,49 +61,49 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
         } else {
             return FR_BAD;
         }
-    }
-
-    //else find aiocb which completed reading, and 'open' this buffer
-    list<FileInfo>::iterator it;
-    it = fileList.begin();
-    int i = 0;
-    while ( !fileList.empty() ){
-        aiocb * ctrl = it->getControl();
-            //cout << "\t iter:"<< ++i << "\n";
-        if ( aio_error(ctrl) == EINPROGRESS){
-            continue;
-        }
-        else{
-           int ret = aio_return(it->getControl());
-           if (ret > 0){
-                //cout << it->getName() << " " << ret << " w pętli \n";
-                string tmp = openBuf(*it, ret);
-                if (tmp == ">>eob<<")
-                    return FR_BAD;
-                line.setLine(tmp);
-                line.setFilename(currentFile->getName());
-                line.setLineNum(currentFile->getCurrentLine());
-                //if eof => eof, erasing file from list
-                if (it->isEof()){
-                    fileList.erase(it);
-                    currentFile = NULL;
-                }
-                if (regexFinder->checkLine(line) == true){
-                    return FR_GOOD;
-                } else {
-                    return FR_BAD;
-                }
-            } else {
-                //delete &(*it);
-                fileList.erase(it);
-                it = fileList.begin();
+    }else {
+//else find aiocb which completed reading, and 'open' this buffer
+        list<FileInfo>::iterator it;
+        it = fileList.begin();
+        int i = 0;
+        while ( !fileList.empty() ){
+            aiocb * ctrl = it->getControl();
+                //cout << "\t iter:"<< ++i << "\n";
+            if ( aio_error(ctrl) == EINPROGRESS){
+                continue;
             }
+            else{
+               int ret = aio_return(it->getControl());
+               if (ret > 0){
+                    //cout << it->getName() << " " << ret << " w pętli \n";
+                    string tmp = openBuf(*it, ret);
+                    if (tmp == ">>eob<<")
+                        return FR_BAD;
+                    line.setLine(tmp);
+                    line.setFilename(currentFile->getName());
+                    line.setLineNum(currentFile->getCurrentLine());
+                    //if eof => eof, erasing file from list
+                    if (it->isEof()){
+                        fileList.erase(it);
+                        currentFile = NULL;
+                    }
+                    if (regexFinder->checkLine(line) == true){
+                        return FR_GOOD;
+                    } else {
+                        return FR_BAD;
+                    }
+                } else {
+                    //delete &(*it);
+                    fileList.erase(it);
+                    it = fileList.begin();
+                }
+            }
+            ++it;
+            if (it == fileList.end())
+                it = fileList.begin();
         }
-        ++it;
-        if (it == fileList.end())
-            it = fileList.begin();
+        return FR_NO_MORE;
     }
-    return FR_NO_MORE;
 }
 
 string AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
@@ -116,7 +117,7 @@ string AsynchronousFileReader::getLineFromBuf()
 {
     //string o wielkości równej ilości znaków przeczytanych przez aio
     string buf( (char *) currentFile->getControl()->aio_buf, currentFile->getBufLength());
-    buf = currentFile->getBufRest() + buf;
+    //buf = currentFile->getBufRest() + buf;
     string del = "\n";
     size_t next = currentFile->getNext();
     size_t current = next + 1;
@@ -129,7 +130,7 @@ string AsynchronousFileReader::getLineFromBuf()
         //std::cout << currentFile->isEof() <<endl;
     }
     if (next == string::npos || next > bufsize){
-        //std::cout << "koniec buffora\n";
+        //std::cout << "getLineFromBuf(): " << current << "  " << bufsize << endl;
         string restLine = buf.substr( current, bufsize );
         currentFile->setBufRest(restLine);
         currentFile->setNext(-1);
@@ -138,7 +139,12 @@ string AsynchronousFileReader::getLineFromBuf()
         currentFile = NULL;
         return ">>eob<<";
     }else{
-        string retLine = buf.substr( current, next - current );
+        string retLine = "";
+        if(currentFile->getBufRest() != ""){
+            retLine = currentFile->getBufRest();
+            currentFile->setBufRest("");
+        }
+        retLine += buf.substr( current, next - current );
         currentFile->plusLine();
         //poniższa linia wypisuje na ekran kolejne zwracane linie
         //std::cout << currentFile->getCurrentLine() << "\t" << retLine << std::endl;
