@@ -6,13 +6,15 @@
 #include "regexfinder.h"
 #include "dummyregexfinder.h"
 #include "boostregexfinder.h"
+#include "re2regexfinder.h"
 
 #include <unistd.h>     //getoption function
 
 
 /// Regex testing defines, uncomment the one that is needed
-//#define TEST_BOOSTREGEX
-#define TEST_DUMMYREGEX
+#define TEST_BOOSTREGEX
+//#define TEST_DUMMYREGEX
+//#define TEST_RE2REGEX
 
 /*
  * switch argv[i] value with next argv value (argv[i+1])
@@ -34,6 +36,10 @@ RegexFinder* initRegexFinder(std::string rgx){
 
     #ifdef TEST_DUMMYREGEX
         return new DummyRegexFinder(rgx);
+    #endif
+
+    #ifdef TEST_RE2REGEX
+        return new RE2RegexFinder(rgx);
     #endif
 }
 
