@@ -2,7 +2,7 @@
 CFLAGS=-O$(O)
 O=2
 LFLAGS=-lrt -lboost_regex -lre2
-OBJS=objs/resultline.o objs/timer.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/re2regexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/regexfinder.o objs/output.o objs/boostregexfinder.o
+OBJS=objs/resultline.o objs/timer.o objs/main.o objs/agrep.o objs/flags.o objs/filereader.o objs/dummyregexfinder.o objs/re2regexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/regexfinder.o objs/output.o objs/boostregexfinder.o
 
 
 .PHONY: all
@@ -18,12 +18,18 @@ objs/resultline.o: src/resultline.cpp src/resultline.h
 objs/timer.o: src/timer.cpp src/timer.h
 	@ echo "    CXX  src/timer.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/timer.cpp" -o $@
-objs/main.o: src/main.cpp src/synchronousfilereader.h src/filereader.h \
- src/resultline.h src/regexfinder.h src/asynchronousfilereader.h \
- src/fileinfo.h src/output.h src/dummyregexfinder.h \
- src/boostregexfinder.h src/re2regexfinder.h
+objs/main.o: src/main.cpp src/agrep.h
 	@ echo "    CXX  src/main.cpp"
-	@ $(CXX) $(CFLAGS) -c "src/main.cpp" -o $@
+	@ $(CXX) $(CFLAGS) -c "src/main.cpp" -o $@	
+objs/agrep.o: src/agrep.cpp src/agrep.h \
+ src/flags.h src/output.h src/filereader.h src/resultline.h src/timer.h
+	@ echo "    CXX  src/agrep.cpp"
+	@ $(CXX) $(CFLAGS) -c "src/agrep.cpp" -o $@	
+objs/flags.o: src/flags.cpp src/flags.h \
+ src/synchronousfilereader.h src/filereader.h src/asynchronousfilereader.h \
+ src/regexfinder.h src/dummyregexfinder.h src/boostregexfinder.h src/re2regexfinder.h
+	@ echo "    CXX  src/flags.cpp"
+	@ $(CXX) $(CFLAGS) -c "src/flags.cpp" -o $@			
 objs/filereader.o: src/filereader.cpp src/filereader.h src/resultline.h \
  src/regexfinder.h
 	@ echo "    CXX  src/filereader.cpp"
@@ -52,14 +58,15 @@ objs/asynchronousfilereader.o: src/asynchronousfilereader.cpp \
 objs/regexfinder.o: src/regexfinder.cpp src/regexfinder.h src/resultline.h
 	@ echo "    CXX  src/regexfinder.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/regexfinder.cpp" -o $@
-objs/output.o: src/output.cpp src/output.h src/resultline.h src/filereader.h \
- src/regexfinder.h
+objs/output.o: src/output.cpp src/output.h \
+ src/resultline.h src/timer.h
 	@ echo "    CXX  src/output.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/output.cpp" -o $@
 objs/boostregexfinder.o: src/boostregexfinder.cpp src/boostregexfinder.h \
  src/regexfinder.h src/resultline.h
 	@ echo "    CXX  src/boostregexfinder.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/boostregexfinder.cpp" -o $@
+
 
 objs:
 	@ mkdir "objs"

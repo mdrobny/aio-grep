@@ -14,7 +14,9 @@ SOURCES += main.cpp \
     src/fileinfo.cpp \
     src/cpp11regexfinder.cpp \
     src/boostregexfinder.cpp \
-    output.cpp \
+    src/output.cpp \
+    src/agrep.cpp \
+    src/flags.cpp \
     src/output.cpp \
     src/timer.cpp \
     src/re2regexfinder.cpp
@@ -30,8 +32,11 @@ HEADERS += \
     src/fileinfo.h \
     src/cpp11regexfinder.h \
     src/boostregexfinder.h \
-    output.h \
+    src/output.h \
+    src/agrep.h \
+    src/flags.h \
     src/output.h \
     src/timer.h \
     src/re2regexfinder.h
+
 
