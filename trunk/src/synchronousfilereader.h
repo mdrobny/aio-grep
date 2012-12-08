@@ -14,6 +14,7 @@ private:
     std::ifstream currentFile;
     int currentLine;
     std::string currentFilename;
+    std::vector<std::string > fileList;
 public:
     SynchronousFileReader(int argc, char** argv, RegexFinder*& rf);
     ReadResult readLine(ResultLine& line);

@@ -12,7 +12,7 @@ class FileReader
 
 protected:
     //! list of all files to be searched
-    std::vector<std::string > fileList;
+    //std::vector<std::string > fileList;
 
     //! used temporarily as a substitude for real regex checking
     RegexFinder* regexFinder;

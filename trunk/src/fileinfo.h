@@ -3,6 +3,7 @@
 #include <iostream>
 #include <aio.h>
 #include <stdlib.h>
+#include <unistd.h>
 using namespace std;
 
 class FileInfo

@@ -3,34 +3,49 @@
 AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf)
     : currentFile(NULL), bufsize(1000)
 {
+    _argc = argc;
+    _argv = argv;
     regexFinder = rf;
-    aioList = (aiocb **) malloc((argc-2)*sizeof(aiocb *));
-    bzero( (char *)aioList, (argc-2) );
-    for (int i = 2 ; i < argc ; ++i){
+    int fileDesLimit = 1021;
+    int aioListSize = argc-2;
+    if(argc - 2 > fileDesLimit)
+        aioListSize = fileDesLimit;
+    aioList = (aiocb **) malloc((aioListSize)*sizeof(aiocb *));
+    bzero( (char *)aioList, (aioListSize) );
+    int i;
+    for (i = 2 ; i < aioListSize+2 ; ++i){
         //! initializing aiocb for file
-        aioList[i-2] = (aiocb *) malloc( sizeof(aiocb));
-        int fd = open(argv[i], O_RDONLY);
-        if (fd < 0){
-            cout << "opening error in file" << argv[i] <<"\n";
-            continue;
-        }
-        bzero( (char *)aioList[i-2], sizeof(struct aiocb) );
-        aioList[i-2]->aio_buf = new char[bufsize];
-        if (!aioList[i-2]->aio_buf){
-            cout << "allocation error in file" << argv[i] <<"\n";
-            continue;
-        }
-        aioList[i-2]->aio_fildes = fd;
-        aioList[i-2]->aio_nbytes = bufsize;
-        aioList[i-2]->aio_offset = 0;
-        aioList[i-2]->aio_lio_opcode = LIO_READ;
-
+        aioList[i-2] = prepareAioStruct(argv[i]);
         FileInfo * file = new FileInfo(argv[i], aioList[i-2]);
         fileList.push_back(*file);
     }
-    int ret = lio_listio(LIO_NOWAIT, aioList, argc-2, NULL );
+    cout << "konstr\n";
+    lastWaitingNo = i;
+    int ret = lio_listio(LIO_NOWAIT, aioList, aioListSize, NULL );
     if (ret < 0)
         cout << "reading error in asynchronous reader\n";
+    cout << "ENDkonstr\n";
+}
+
+aiocb * AsynchronousFileReader::prepareAioStruct(const char * filename)
+{
+    aiocb * aio = (aiocb *) malloc( sizeof(aiocb));
+    int fd = open(filename, O_RDONLY);
+    if (fd < 0){
+        cout << "opening error in file" << filename <<"\n";
+        return NULL;
+    }
+    bzero( (char *)aio, sizeof(struct aiocb) );
+    aio->aio_buf = new char[bufsize];
+    if (!aio->aio_buf){
+        cout << "allocation error in file" << filename <<"\n";
+        return NULL;
+    }
+    aio->aio_fildes = fd;
+    aio->aio_nbytes = bufsize;
+    aio->aio_offset = 0;
+    aio->aio_lio_opcode = LIO_READ;
+    return aio;
 }
 
 AsynchronousFileReader::~AsynchronousFileReader()
@@ -82,10 +97,20 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                     line.setLine(tmp);
                     line.setFilename(currentFile->getName());
                     line.setLineNum(currentFile->getCurrentLine());
-                    //if eof => eof, erasing file from list
+                    //if eof => eof, erasing file from list and add another one if exist
                     if (it->isEof()){
+                        //cout << "EOF\t" << fileList.size() << " \t";
                         fileList.erase(it);
                         currentFile = NULL;
+                        if ( lastWaitingNo < _argc){
+                            aiocb * aioStruct = prepareAioStruct(_argv[lastWaitingNo]);
+                            if(aioStruct){
+                                FileInfo * file = new FileInfo(_argv[lastWaitingNo], aioStruct);
+                                fileList.push_back(*file);
+                                aio_read(aioStruct);
+                                ++lastWaitingNo;
+                            }
+                        }
                     }
                     if (regexFinder->checkLine(line) == true){
                         return FR_GOOD;
@@ -93,6 +118,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                         return FR_BAD;
                     }
                 } else {
+                    cout << "ret < 0\t";
                     //delete &(*it);
                     fileList.erase(it);
                     it = fileList.begin();
@@ -113,6 +139,7 @@ string AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
     return getLineFromBuf();
 }
 
+//To-Do gdzie d cholery te pliki się kończą!!
 string AsynchronousFileReader::getLineFromBuf()
 {
     //string o wielkości równej ilości znaków przeczytanych przez aio
@@ -123,8 +150,9 @@ string AsynchronousFileReader::getLineFromBuf()
     size_t current = next + 1;
     next = buf.find_first_of( del, current );
     currentFile->setNext(next);
-    //std::cout << "getLineFromBuf(): " << current << "  " << next << endl;
-    if(currentFile->getBufLength() == next && next < bufsize){
+    //std::cout << currentFile->getBufLength() << "\t" << next << endl;
+    //ustawianie flagi końca pliku, która chyba działa
+    if(currentFile->getBufLength() < bufsize && next == string::npos){
         //std::cout << "set eof next:" << next << " bufL: " << currentFile->getBufLength() << std::endl;
         currentFile->setEof();
         //std::cout << currentFile->isEof() <<endl;
@@ -135,7 +163,8 @@ string AsynchronousFileReader::getLineFromBuf()
         currentFile->setBufRest(restLine);
         currentFile->setNext(-1);
         //initializing next aio reading
-        startNextRead(currentFile->getControl());
+        if (!currentFile->isEof())
+            startNextRead(currentFile->getControl());
         currentFile = NULL;
         return ">>eob<<";
     }else{
@@ -159,3 +188,6 @@ int AsynchronousFileReader::startNextRead(aiocb *aio)
     aio_read(aio);
     //std::cout << "aio_read\n";
 }
+
+
+
