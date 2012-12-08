@@ -20,11 +20,15 @@ class AsynchronousFileReader : public FileReader
     int bufsize;
     FileInfo * currentFile;
     int aiocbAmount;
+    int lastWaitingNo;
+    int _argc;
+    char **_argv;
     aiocb ** aioList;
 
     string openBuf(FileInfo & fInfo, int ret);
     string getLineFromBuf();
     int startNextRead(aiocb * aio);
+    aiocb * prepareAioStruct(const char *filename);
 public:
     AsynchronousFileReader(int argc, char** argv, RegexFinder *rf);
     ~AsynchronousFileReader();

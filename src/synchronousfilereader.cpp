@@ -5,6 +5,11 @@ SynchronousFileReader::SynchronousFileReader(int argc, char** argv, RegexFinder 
     currentFile(0),
     currentLine(0)
 {
+    for(int i = 2; i < argc; ++i)
+        {
+            std::string tmp(argv[i]);
+            fileList.push_back(tmp);
+        }
 }
 
 FileReader::ReadResult SynchronousFileReader::readLine(ResultLine &line)
