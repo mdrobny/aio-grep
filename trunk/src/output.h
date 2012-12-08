@@ -2,19 +2,20 @@
 #define OUTPUT_H
 
 #include "resultline.h"
-#include "filereader.h"
+#include "timer.h"
 
 class Output
 {
 public:
-    Output(char printTypeFlag, FileReader* fileReader, std::string& fileReaderMethod);
-    void printResults();
+    Output(char printTypeFlag, std::string& fileReaderMethod);
+    void printResult(ResultLine& l);
+    void printSummary(Timer& time);
     ~Output();
 
 private:
     char printType;
-    FileReader* fr;
     std::string frMethod; //tests
+    int totalOcc;     //total occurences amount
     //std::string* colorList;
     //static int colorIt;
 

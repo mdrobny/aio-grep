@@ -8,7 +8,7 @@ Timer::Timer()
 
 Timer::~Timer()
 {
-    std::cout << "Executing time: " << clock() - start << std::endl;
+    //std::cout << "Executing time: " << clock() - start << std::endl;
 }
 
 time_t Timer::getTime()

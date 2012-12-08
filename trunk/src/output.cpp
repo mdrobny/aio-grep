@@ -11,10 +11,10 @@
 /*
  * Initializes colorList
  */
-Output::Output(char printTypeFlag,FileReader* fileReader, std::string& fileReaderMethod) {
+Output::Output(char printTypeFlag, std::string& fileReaderMethod) {
     printType=printTypeFlag;
-    fr=fileReader;
     frMethod=fileReaderMethod;
+    totalOcc=0;
     //colorList=new std::string[COLOR_AMOUNT];
     /*colorList[0]=RESET; colorList[1]=RED; colorList[2]=GREEN; colorList[3]=YELLOW;
     colorList[4]=BLUE;*/
@@ -29,61 +29,51 @@ Output::~Output(){
  * prints results
  * typedef int_pair_t from ResultLine.h
  */
-void Output::printResults(){
+void Output::printResult(ResultLine& l){
     std::ios_base::sync_with_stdio(false);
     int_pair_t o;       //pair of occurence
     int_pair_t* occ;    //array of pairs
     size_t nr;          //getNumberOfOccurences() value
-    int totalOcc=0;     //total occurences amount
 
-    ResultLine l;
-    FileReader::ReadResult r;
-    while((r = fr->readLine(l)) != FileReader::FR_NO_MORE) {
-        if(r == FileReader::FR_GOOD) {
-            std::cout << "In file: " << l.getFilename() << "\n";
-            nr=l.getNumberOfOccurences();
-            totalOcc+=nr;
 
-            //if more than 1 occurence
-            if(nr>1){
-                occ=new int_pair_t[nr];
-                for(int i=0; i < nr; i++) {
-                    occ[i]=l.getOccurence(i);
-                    //std::cout<<occ[i].first<<":"<<occ[i].second<<std::endl;
-                }
+    //std::cout << "In file: " << l.getFilename() << "\n";
+    nr=l.getNumberOfOccurences();
+    totalOcc+=nr;
 
-                std::cout<< l.getLineNum() <<":\t"<< RESET
-                         << l.getLine().substr(0,occ[0].first) << RED;
-                for(int i=0; i < nr; i++){
-                    std::cout<< l.getLine().substr(occ[i].first,occ[i].second - occ[i].first) << RESET;
-                    if((i+1) < nr)
-                        std::cout<< l.getLine().substr(occ[i].second,occ[i+1].first - occ[i].second) << RED;
-                    else
-                        std::cout<< l.getLine().substr(occ[i].second);
-                }
-                std::cout<<"\n";//<<std::endl;
-
-                delete occ;
-            } else {
-            //if only 1 occurence
-                o = l.getOccurence(0);
-                std::cout<< l.getLineNum() <<":\t"<< RESET
-                         << l.getLine().substr(0,o.first) << RED
-                         << l.getLine().substr(o.first,o.second-o.first) << RESET
-                         << l.getLine().substr(o.second) <<"\n";//<<std::endl;
-            }
-            std::cout << "\n";// << std::endl;
+    //if more than 1 occurence
+    if(nr>1){
+        occ=new int_pair_t[nr];
+        for(int i=0; i < nr; i++){
+            occ[i]=l.getOccurence(i);
+            //std::cout<<occ[i].first<<":"<<occ[i].second<<std::endl;
         }
-        else if (r == FileReader::FR_OPEN_FAILED)
-        {
-            std::cout << "ERROR: File open failed in file: " << l.getFilename();//<< std::endl;
+        std::cout<< l.getLineNum() <<": "<< RESET
+                 << l.getLine().substr(0,occ[0].first) << RED;
+        for(int i=0; i < nr; i++){
+            std::cout<< l.getLine().substr(occ[i].first,occ[i].second - occ[i].first) << RESET;
+            if((i+1) < nr)
+                std::cout<< l.getLine().substr(occ[i].second,occ[i+1].first - occ[i].second) << RED;
+            else
+                std::cout<< l.getLine().substr(occ[i].second);
         }
+
+        delete occ;
+    } else {
+    //if only 1 occurence
+        o = l.getOccurence(0);
+        std::cout<< l.getLineNum() <<": "<< RESET
+                 << l.getLine().substr(0,o.first) << RED
+                 << l.getLine().substr(o.first,o.second-o.first) << RESET
+                 << l.getLine().substr(o.second) <<"\n";
+
     }
+    std::cout<<"\n"; //tests
+}
 
+void Output::printSummary(Timer& time){
     std::cout<<"SUMMARY:\n \t Total occurence amount: "<< RED << totalOcc << RESET <<"\n"
             <<"\t Method used: "<< RED << frMethod<< RESET << "\n"
-            <<"\t Process time: "<<std::endl;
-
+           <<"\t Process time: "<< time.getTime() <<std::endl;
 }
 
 /*
