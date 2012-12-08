@@ -7,19 +7,14 @@
 class Output
 {
 public:
-    Output(char printTypeFlag, std::string& fileReaderMethod);
+    Output(char methodChar,char* flagsChar);
     void printResult(ResultLine& l);
     void printSummary(Timer& time);
-    ~Output();
 
 private:
-    char printType;
+    char flagLineNumbers;
     std::string frMethod; //tests
     int totalOcc;     //total occurences amount
-    //std::string* colorList;
-    //static int colorIt;
-
-    //std::string chooseColor();
 };
 
 #endif // OUTPUT_H

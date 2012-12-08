@@ -16,13 +16,13 @@ class Flags
 public:
     Flags(int argc, char** argv);
     FileReader* getFileReader();
-    //std::string getFileReaderMethod() const;
     ~Flags();
 
-    std::string frMethod; //passed to Output object
+    char methodChar; //passed to Output object
+    char* flagsChar; //output flags passed to Output object
 
 private:
-    void correctArgs(int& argc, char** argv);
+    void correctArgs(int& argc, char** argv,int optind);
     RegexFinder* initRegexFinder(std::string rgx);
     RegexFinder* rf;
     FileReader* fr;

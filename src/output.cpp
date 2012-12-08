@@ -11,18 +11,10 @@
 /*
  * Initializes colorList
  */
-Output::Output(char printTypeFlag, std::string& fileReaderMethod) {
-    printType=printTypeFlag;
-    frMethod=fileReaderMethod;
+Output::Output(char methodChar, char *flagsChar) {
+    flagLineNumbers=flagsChar[0];
+    frMethod=(methodChar=='a') ? "asynchronous" : "synchronous";
     totalOcc=0;
-    //colorList=new std::string[COLOR_AMOUNT];
-    /*colorList[0]=RESET; colorList[1]=RED; colorList[2]=GREEN; colorList[3]=YELLOW;
-    colorList[4]=BLUE;*/
-    //colorIt=0;
-}
-
-Output::~Output(){
-    //delete colorList;
 }
 
 /*
@@ -45,10 +37,10 @@ void Output::printResult(ResultLine& l){
         occ=new int_pair_t[nr];
         for(int i=0; i < nr; i++){
             occ[i]=l.getOccurence(i);
-            //std::cout<<occ[i].first<<":"<<occ[i].second<<std::endl;
         }
-        std::cout<< l.getLineNum() <<": "<< RESET
-                 << l.getLine().substr(0,occ[0].first) << RED;
+        if(flagLineNumbers)
+            std::cout<< l.getLineNum() <<": ";
+        std::cout<< RESET<< l.getLine().substr(0,occ[0].first) << RED;
         for(int i=0; i < nr; i++){
             std::cout<< l.getLine().substr(occ[i].first,occ[i].second - occ[i].first) << RESET;
             if((i+1) < nr)
@@ -61,7 +53,9 @@ void Output::printResult(ResultLine& l){
     } else {
     //if only 1 occurence
         o = l.getOccurence(0);
-        std::cout<< l.getLineNum() <<": "<< RESET
+        if(flagLineNumbers)
+            std::cout<< l.getLineNum() <<": ";
+        std::cout<< RESET
                  << l.getLine().substr(0,o.first) << RED
                  << l.getLine().substr(o.first,o.second-o.first) << RESET
                  << l.getLine().substr(o.second) <<"\n";
@@ -75,12 +69,3 @@ void Output::printSummary(Timer& time){
             <<"\t Method used: "<< RED << frMethod<< RESET << "\n"
            <<"\t Process time: "<< time.getTime() <<std::endl;
 }
-
-/*
- * changes color
- * NOT IN USE (YET)
- */
-/*std::string Output::chooseColor(){
-    if(colorIt >= COLOR_AMOUNT) colorIt=0;
-    return colorList[colorIt++];
-}*/

@@ -7,7 +7,7 @@ Agrep::Agrep(int argc, char **argv){
     Flags flagManager=Flags(argc,argv);
     FileReader* fr=flagManager.getFileReader();  //fileReader
 
-    Output output=Output('n',flagManager.frMethod);
+    Output output=Output(flagManager.methodChar,flagManager.flagsChar);
 
     ResultLine l;
     FileReader::ReadResult r;
