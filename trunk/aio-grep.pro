@@ -7,7 +7,6 @@ SOURCES += main.cpp \
     src/filereader.cpp \
     src/asynchronousfilereader.cpp \
     src/synchronousfilereader.cpp \
-    src/main.cpp \
     src/resultline.cpp \
     src/regexfinder.cpp \
     src/dummyregexfinder.cpp \

@@ -4,30 +4,37 @@
 #include <aio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string>
 using namespace std;
 
 class FileInfo
 {
-    size_t next;
-    string fileName;
+    char * fileName;
     long currentLine;
     int bufLength;
     aiocb * aioControl;
-    string bufRest;
+    std::string bufRest;
     bool eof;
+    bool isBufRest;
+    char * nextP;
+    char * endP;
+
 public:
     void setEof() { eof = true;  }
     bool isEof() { return eof;}
     void setBufLength(int bL) { bufLength = bL;}
     int getBufLength() { return bufLength;}
-    void setBufRest(string s) { bufRest = s;}
-    string getBufRest() { return bufRest;}
-    void setNext(int i) { next = i;}
-    int getNext() {return next;}
+    void setBufRest(char * s, int n) { bufRest.replace(0,n,s); isBufRest = true;}
+    string getBufRest() { isBufRest = false; return bufRest;}
+    bool isRest() { return isBufRest;}
+    void setNext(char* p) { nextP = p;}
+    char * getNext() {return nextP;}
+    void setEnd(char* p) { endP = p;}
+    char * getEnd() {return endP;}
     void plusLine() { ++currentLine;}
     long getCurrentLine() {return currentLine;}
-    string & getName() {return fileName; }
-    FileInfo(string name, aiocb * aioC);
+    char * getName() { return fileName; }
+    FileInfo(char * name, aiocb * aioC);
     ~FileInfo();
     aiocb * getControl() { return aioControl; }
 };
