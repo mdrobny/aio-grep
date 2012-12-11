@@ -1,7 +1,7 @@
 #include "fileinfo.h"
 
-FileInfo::FileInfo(string name, aiocb * aioC = NULL)
-    : fileName(name), aioControl(aioC), currentLine(0), next(-1), bufRest(""), eof(false)
+FileInfo::FileInfo(char * name, aiocb * aioC = NULL)
+    : fileName(name), aioControl(aioC), currentLine(0), eof(false), bufRest(string()), isBufRest(0)
 {
 }
 

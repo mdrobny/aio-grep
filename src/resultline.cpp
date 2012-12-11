@@ -50,7 +50,6 @@ std::string ResultLine::getFilename()
     return filename;
 }
 
-
 void ResultLine::setFilename(std::string &filename)
 {
     this->filename = filename;
@@ -64,7 +63,7 @@ int ResultLine::getNumberOfOccurences()
 void ResultLine::clear()
 {
     occurences.clear();
-    line.clear();
+    //line = "";
     lineNum = 0;
     filename = "";
 }
