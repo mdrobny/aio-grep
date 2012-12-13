@@ -1,20 +1,22 @@
 #include "dummyregexfinder.h"
 #include <iostream>
+#include <cstring>
 
-DummyRegexFinder::DummyRegexFinder(std::string str) : RegexFinder()
+DummyRegexFinder::DummyRegexFinder(char *str) : RegexFinder()
 {
     rgx = str;
 }
 
 bool DummyRegexFinder::checkLine(ResultLine &line)
 {
-    std::string str = line.getLine();
-    size_t pos = 0;
+    const char* str = line.getLine().c_str();
+    const char* pos = 0;
     bool found = false;
-    while( (pos = str.find(rgx, pos)) != std::string::npos) {
-        int_pair_t occurence = std::make_pair(pos, pos + rgx.length());
+    while( (pos = strstr(str, rgx)) != NULL) {
+        int tmp = strlen(str) - strlen(pos);
+        int_pair_t occurence = std::make_pair(tmp, tmp + strlen(rgx));
         line.addOccurence(occurence);
-        pos = pos + rgx.length();
+        str = pos + strlen(rgx);
         found = true;
     }
 
@@ -26,5 +28,5 @@ bool DummyRegexFinder::checkLine(ResultLine &line)
 
 void DummyRegexFinder::setRegex(std::string str)
 {
-    rgx = str;
+    rgx = str.c_str();
 }

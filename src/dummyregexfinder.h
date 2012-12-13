@@ -7,10 +7,10 @@
 class DummyRegexFinder : public RegexFinder
 {
     private:
-        std::string rgx;
+        const char* rgx;
 public:
 
-    DummyRegexFinder(std::string str);
+    DummyRegexFinder(char *str);
     virtual bool checkLine(ResultLine &line);
     virtual void setRegex(std::string str);
 

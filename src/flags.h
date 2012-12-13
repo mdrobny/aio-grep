@@ -23,7 +23,7 @@ public:
 
 private:
     void correctArgs(int& argc, char** argv,int optind);
-    RegexFinder* initRegexFinder(std::string rgx);
+    RegexFinder* initRegexFinder(char *rgx);
     RegexFinder* rf;
     FileReader* fr;
 
