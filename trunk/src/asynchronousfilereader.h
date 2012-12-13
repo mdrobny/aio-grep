@@ -24,11 +24,13 @@ class AsynchronousFileReader : public FileReader
     int _argc;
     char **_argv;
     aiocb ** aioList;
+    char * generalBuf;
 
     string openBuf(FileInfo & fInfo, int ret);
     string getLineFromBuf();
     int startNextRead(aiocb * aio);
-    aiocb * prepareAioStruct(const char *filename);
+    aiocb * prepareAioStruct(const char *, void *, aiocb *aio);
+    void switchFile(list<FileInfo>::iterator fi);
 public:
     AsynchronousFileReader(int argc, char** argv, RegexFinder *rf);
     ~AsynchronousFileReader();

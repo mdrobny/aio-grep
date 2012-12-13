@@ -8,6 +8,5 @@ FileInfo::FileInfo(char * name, aiocb * aioC = NULL)
 FileInfo::~FileInfo()
 {
     close(aioControl->aio_fildes);
-    free((void *) (aioControl->aio_buf));
     free(aioControl);
 }
