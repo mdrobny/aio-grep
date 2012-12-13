@@ -50,7 +50,8 @@ aiocb * AsynchronousFileReader::prepareAioStruct(const char * filename, void * b
 
 void AsynchronousFileReader::switchFile(list<FileInfo>::iterator fi)
 {
-    close(fi->getControl()->aio_fildes);
+    aiocb * aio = fi->getControl();
+    close(aio->aio_fildes);
     char * filename = _argv[lastWaitingNo];
     fi->setName(filename);
     int fd = open(filename , O_RDONLY);
@@ -58,8 +59,10 @@ void AsynchronousFileReader::switchFile(list<FileInfo>::iterator fi)
         cout << "opening error in file" << filename <<"\n";
         return;
     }
-    fi->getControl()->aio_fildes = fd;
-    aio_read(fi->getControl());
+    aio->aio_fildes = fd;
+    aio->aio_offset = 0;
+
+    aio_read(aio);
     ++lastWaitingNo;
 }
 
