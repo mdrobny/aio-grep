@@ -78,7 +78,7 @@ void Flags::correctArgs(int& argc, char** argv,int optind){
 /*
  * initialize choosen RegexFinder
  */
-RegexFinder* Flags::initRegexFinder(std::string rgx){
+RegexFinder* Flags::initRegexFinder(char* rgx){
     //return new BoostRegexFinder(rgx);
     return new DummyRegexFinder(rgx);
     //return new RE2RegexFinder(rgx);
