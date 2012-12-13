@@ -34,6 +34,7 @@ public:
     void plusLine() { ++currentLine;}
     long getCurrentLine() {return currentLine;}
     char * getName() { return fileName; }
+    void setName(char * fP) { fileName = fP; }
     FileInfo(char * name, aiocb * aioC);
     ~FileInfo();
     aiocb * getControl() { return aioControl; }
