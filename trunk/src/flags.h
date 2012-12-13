@@ -3,6 +3,7 @@
 
 #include "synchronousfilereader.h"
 #include "asynchronousfilereader.h"
+#include "mmapfilereader.h"
 #include "regexfinder.h"
 
 #include "dummyregexfinder.h"

@@ -14,16 +14,18 @@ Flags::Flags(int argc, char** argv){
     char flagCaseInsensitivity=0;
 
     /*flag passed
-     *'a' xor 's'
+     *'a' xor 's' xor 'm'
      *'i' - case insensitive
      *'h' - show line numbers
      */
     opterr=0; //no stderr
-    while((opt=getopt(argc,argv,"saih")) !=-1){
+    while((opt=getopt(argc,argv,"samih")) !=-1){
         if(opt=='s' && methodChar==0){
             methodChar='s';
         } else if(opt=='a' && methodChar==0){
             methodChar='a';
+        } else if(opt=='m' && methodChar==0){
+            methodChar='m';
         }
         switch(opt){
         case 'i':
@@ -52,6 +54,9 @@ Flags::Flags(int argc, char** argv){
             break;
         case 'a':
             fr= new AsynchronousFileReader(argc, argv, rf);
+            break;
+        case 'm':
+            fr= new MmapFileReader(argc,argv,rf);
             break;
         default:
         //no flags so SYNC
