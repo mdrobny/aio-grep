@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     src/flags.cpp \
     src/output.cpp \
     src/timer.cpp \
-    src/re2regexfinder.cpp
+    src/re2regexfinder.cpp \
+    src/mmapfilereader.cpp
 
 HEADERS += \
     src/ResultLine.h \
@@ -36,6 +37,7 @@ HEADERS += \
     src/flags.h \
     src/output.h \
     src/timer.h \
-    src/re2regexfinder.h
+    src/re2regexfinder.h \
+    src/mmapfilereader.h
 
 

@@ -13,7 +13,16 @@
  */
 Output::Output(char methodChar, char *flagsChar) {
     flagLineNumbers=flagsChar[0];
-    frMethod=(methodChar=='a') ? "asynchronous" : "synchronous";
+    switch(methodChar){
+        case 's':
+            frMethod="synchronous"; break;
+        case 'a':
+            frMethod="asynchronous"; break;
+        case 'm':
+            frMethod="mmap"; break;
+    }
+
+    //frMethod=(methodChar=='a') ? "asynchronous" : "synchronous";
     totalOcc=0;
 }
 

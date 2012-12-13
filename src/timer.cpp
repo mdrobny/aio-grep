@@ -3,7 +3,7 @@
 Timer::Timer()
 {
     start = clock();
-    std::cout << "start!\n";
+    //std::cout << "start!\n";
 }
 
 Timer::~Timer()
