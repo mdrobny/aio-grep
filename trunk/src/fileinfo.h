@@ -21,6 +21,7 @@ class FileInfo
 
 public:
     void setEof() { eof = true;  }
+    void unsetEof() { eof = false;  }
     bool isEof() { return eof;}
     void setBufLength(int bL) { bufLength = bL;}
     int getBufLength() { return bufLength;}
@@ -38,6 +39,7 @@ public:
     FileInfo(char * name, aiocb * aioC);
     ~FileInfo();
     aiocb * getControl() { return aioControl; }
+    void setControl(aiocb * p) { aioControl = p; }
 };
 
 #endif // FILEINFO_H
