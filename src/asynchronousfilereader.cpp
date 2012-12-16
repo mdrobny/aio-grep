@@ -61,6 +61,7 @@ void AsynchronousFileReader::switchFile(list<FileInfo>::iterator fi)
     aio->aio_offset = 0;
     aio_read(fi->getControl());
     fi->unsetEof();
+    fi->zeroLine();
     ++lastWaitingNo;
 }
 
@@ -143,7 +144,7 @@ string AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
     currentFile = & fInfo;
     currentFile->setBufLength(ret);
     currentFile->setEnd((char *) currentFile->getControl()->aio_buf + ret);
-    currentFile->setNext((char *) currentFile->getControl()->aio_buf - 1);
+    currentFile->setNext((char *) currentFile->getControl()->aio_buf - 1); // -1!?
     return getLineFromBuf();
 }
 

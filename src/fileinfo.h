@@ -33,6 +33,7 @@ public:
     void setEnd(char* p) { endP = p;}
     char * getEnd() {return endP;}
     void plusLine() { ++currentLine;}
+    void zeroLine() { currentLine = 0;}
     long getCurrentLine() {return currentLine;}
     char * getName() { return fileName; }
     void setName(char * fP) { fileName = fP; }
