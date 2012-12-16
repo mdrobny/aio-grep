@@ -12,6 +12,7 @@ bool DummyRegexFinder::checkLine(ResultLine &line)
     const char* str = line.getLine().c_str();
     const char* tmp_str = line.getLine().c_str();
     const char* pos = 0;
+
     bool found = false;
     while( (pos = strstr(str, rgx)) != NULL) {
         int tmp = strlen(tmp_str) - strlen(pos);
