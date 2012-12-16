@@ -4,19 +4,13 @@ ResultLine::ResultLine()
 {
 }
 
-void ResultLine::setLine(std::string &str)
+void ResultLine::setLine(const std::string &str)
 {
     line = str;
 }
 
 
-void ResultLine::appendToLine(std::string &str)
-{
-    line.append(str.c_str());
-}
-
-
-std::string ResultLine::getLine() const
+const std::string& ResultLine::getLine() const
 {
     return line;
 }
@@ -34,7 +28,7 @@ void ResultLine::setLineNum(int n)
 }
 
 
-int_pair_t ResultLine::getOccurence(int which) const
+const std::pair<int, int>& ResultLine::getOccurence(int which) const
 {
     return occurences[which];
 }
@@ -45,12 +39,12 @@ int ResultLine::getLineNum() const
     return lineNum;
 }
 
-std::string ResultLine::getFilename()
+const std::string& ResultLine::getFilename() const
 {
     return filename;
 }
 
-void ResultLine::setFilename(std::string &filename)
+void ResultLine::setFilename(const std::string &filename)
 {
     this->filename = filename;
 }

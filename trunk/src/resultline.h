@@ -19,15 +19,14 @@ private:
 
 public:
     ResultLine();
-    void setLine(std::string& str);
-    void appendToLine(std::string& str);
-    std::string getLine() const;
+    void setLine(const std::string& str);
+    const std::string& getLine() const;
     void addOccurence(int_pair_t occ);
-    std::pair<int, int> getOccurence(int which) const;
+    const std::pair<int, int>& getOccurence(int which) const;
     void setLineNum(int n);
     int getLineNum() const;
-    std::string getFilename();
-    void setFilename(std::string& filename);
+    const std::string& getFilename() const;
+    void setFilename(const std::string &filename);
     int getNumberOfOccurences();
     void clear();
 };
