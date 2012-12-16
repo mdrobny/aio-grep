@@ -28,6 +28,7 @@ class AsynchronousFileReader : public FileReader
     aiocb ** aioList;
     char * generalBuf;
     string * tmp;
+    string * out;
     std::pair<char *, char *> * ln;
 
     void openBuf(FileInfo & fInfo, int ret);

@@ -44,6 +44,8 @@ bool DummyRegexFinder::checkLineChar(ResultLine &line)
         str = pos + strlen(rgx);
         found = true;
     }
+    //4 debug if u want to print every line to check if they are read correctly
+    //std::cout << str <<std::endl;
     *end = tmp;
     return found;
 }

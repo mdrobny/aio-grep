@@ -1,7 +1,7 @@
 #include "asynchronousfilereader.h"
 
 AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf)
-    : currentFile(NULL), bufsize(10000) ,ln(new std::pair<char *, char *>), tmp(NULL)
+    : currentFile(NULL), bufsize(10000) ,ln(new std::pair<char *, char *>), tmp(NULL), out(NULL)
 {
     _argc = argc;
     _argv = argv;
@@ -62,6 +62,7 @@ void AsynchronousFileReader::switchFile(list<FileInfo>::iterator fi)
     aio_read(fi->getControl());
     fi->unsetEof();
     fi->zeroLine();
+    fi->unsetRest();
     ++lastWaitingNo;
 }
 
@@ -78,6 +79,10 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
     if(tmp){
         delete tmp;
         tmp = NULL;
+    }
+    if(out){
+        delete out;
+        out = NULL;
     }
     //if there is any 'opened' buffer to read => read from it
     if (currentFile){
@@ -138,9 +143,9 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
         if (regexFinder->checkLineChar(line) == true){
             std::string fName(currentFile->getName());
             line.setFilename(fName);
-            tmp = new string;
-            tmp->assign(ln->first,ln->second-ln->first);
-            line.setLine(*tmp);
+            out = new string;
+            out->insert(0,ln->first,ln->second-ln->first);
+            line.setLine(*out);
             line.setLineNum(currentFile->getCurrentLine());
             return FR_GOOD;
         } else {
@@ -155,13 +160,13 @@ void AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
     currentFile->setBufLength(ret);
     currentFile->setEnd((char *) currentFile->getControl()->aio_buf + ret);
     currentFile->setNext((char *) currentFile->getControl()->aio_buf - 1); // -1!?
+    char * buf = (char *) currentFile->getControl()->aio_buf;
+    buf[currentFile->getBufLength()] = '\0';
 }
 
 void AsynchronousFileReader::getLineFromBuf()
 {
-    //cout << "getLine\n";
     char * buf = (char *) currentFile->getControl()->aio_buf;
-    buf[currentFile->getBufLength()] = '\0';
     char del = '\n';
     char * next = currentFile->getNext();
     char * current = next + 1;
@@ -169,7 +174,6 @@ void AsynchronousFileReader::getLineFromBuf()
     next = strchr(current,del);
 
     currentFile->setNext(next);
-    //std::cout << (void *)end << " " << (void *)next << "\n";
     if(currentFile->getBufLength() < bufsize && !next ){
         currentFile->setEof();
     }
@@ -184,6 +188,7 @@ void AsynchronousFileReader::getLineFromBuf()
     }else{
         if(currentFile->isRest()){
             tmp = new string();
+            tmp->clear();
             tmp->insert(0,currentFile->getBufRest());
             tmp->append(current,next-current);
             ln->first = (char *) tmp->c_str();
