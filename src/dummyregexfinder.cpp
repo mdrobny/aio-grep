@@ -30,7 +30,7 @@ bool DummyRegexFinder::checkLine(ResultLine &line)
 bool DummyRegexFinder::checkLineChar(ResultLine &line)
 {
     const char* str = line.getBeginLine();
-    const char* tmp_str = line.getLine().c_str();
+    const char* tmp_str = line.getBeginLine();
     char * end = line.getEndLine();
     char tmp = *end;
     *end = '\0';
