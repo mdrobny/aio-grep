@@ -9,6 +9,7 @@ class RegexFinder
 public:
     RegexFinder();
     virtual bool checkLine(ResultLine& line) = 0;
+    virtual bool checkLineChar(ResultLine& line) = 0;
     virtual void setRegex(std::string r) = 0;
     virtual ~RegexFinder();
 };

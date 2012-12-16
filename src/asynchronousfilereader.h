@@ -11,6 +11,8 @@
 #include <cstring>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <utility>
+#include <stdexcept>
 
 typedef std::pair<int, int> int_pair_t;
 
@@ -25,9 +27,11 @@ class AsynchronousFileReader : public FileReader
     char **_argv;
     aiocb ** aioList;
     char * generalBuf;
+    string * tmp;
+    std::pair<char *, char *> * ln;
 
-    string openBuf(FileInfo & fInfo, int ret);
-    string getLineFromBuf();
+    void openBuf(FileInfo & fInfo, int ret);
+    void getLineFromBuf();
     int startNextRead(aiocb * aio);
     aiocb * prepareAioStruct(const char *, void *, aiocb *aio);
     void switchFile(list<FileInfo>::iterator fi);
