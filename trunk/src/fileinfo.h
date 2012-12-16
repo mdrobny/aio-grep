@@ -26,7 +26,8 @@ public:
     void setBufLength(int bL) { bufLength = bL;}
     int getBufLength() { return bufLength;}
     void setBufRest(char * s, int n) { bufRest.replace(0,n,s); isBufRest = true;}
-    string getBufRest() { isBufRest = false; return bufRest;}
+    string getBufRest(){isBufRest = false; return bufRest;}
+    void unsetRest() { isBufRest = false;}
     bool isRest() { return isBufRest;}
     void setNext(char* p) { nextP = p;}
     char * getNext() {return nextP;}
