@@ -1,7 +1,7 @@
 #include "asynchronousfilereader.h"
 
 AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinder* rf)
-    : currentFile(NULL), bufsize(9000)
+    : currentFile(NULL), bufsize(10000) ,ln(new std::pair<char *, char *>), tmp(NULL)
 {
     _argc = argc;
     _argv = argv;
@@ -69,15 +69,19 @@ AsynchronousFileReader::~AsynchronousFileReader()
 {
     free(aioList);
     free(generalBuf);
+    delete ln;
     //free(generalAio);
 }
 
 FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
 {
+    if(tmp){
+        delete tmp;
+        tmp = NULL;
+    }
     //if there is any 'opened' buffer to read => read from it
-    string tmp;
     if (currentFile){
-        tmp = getLineFromBuf();
+        getLineFromBuf();
         if (currentFile->isEof()){
             currentFile = NULL;
         }
@@ -89,7 +93,7 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
             if ( aio_error(ctrl) == EINPROGRESS){
             }
             else{
-               int ret = aio_return(it->getControl());
+               int ret = aio_return(ctrl);
                if (ret > 0){
                     if (it->isEof()){
                         currentFile = NULL;
@@ -101,7 +105,8 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
                         }
                         break;
                     }else{
-                        tmp = openBuf(*it, ret);
+                        openBuf(*it, ret);
+                        getLineFromBuf();
                     }
                     break;
                 } else {
@@ -122,15 +127,20 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
     if(fileList.empty()){
         return FR_NO_MORE;
     }
-    if (tmp == ">>eob<<"){
+    if (!ln->first ){
         currentFile = NULL;
         return FR_BAD;
     }else{
-        line.setLine(tmp);
+        line.setLine(ln->first,ln->second);
         line.clear();
-        if (regexFinder->checkLine(line) == true){
+        //poniższa linia wypisuje na ekran kolejne zwracane linie
+        //std::cout << "\t" << string(ln->first,ln->second) << std::endl;
+        if (regexFinder->checkLineChar(line) == true){
             std::string fName(currentFile->getName());
             line.setFilename(fName);
+            tmp = new string;
+            tmp->assign(ln->first,ln->second-ln->first);
+            line.setLine(*tmp);
             line.setLineNum(currentFile->getCurrentLine());
             return FR_GOOD;
         } else {
@@ -139,17 +149,17 @@ FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
     }
 }
 
-string AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
+void AsynchronousFileReader::openBuf(FileInfo & fInfo, int ret)
 {
     currentFile = & fInfo;
     currentFile->setBufLength(ret);
     currentFile->setEnd((char *) currentFile->getControl()->aio_buf + ret);
     currentFile->setNext((char *) currentFile->getControl()->aio_buf - 1); // -1!?
-    return getLineFromBuf();
 }
 
-string  AsynchronousFileReader::getLineFromBuf()
+void AsynchronousFileReader::getLineFromBuf()
 {
+    //cout << "getLine\n";
     char * buf = (char *) currentFile->getControl()->aio_buf;
     buf[currentFile->getBufLength()] = '\0';
     char del = '\n';
@@ -169,18 +179,20 @@ string  AsynchronousFileReader::getLineFromBuf()
         if (!currentFile->isEof()){
             startNextRead(currentFile->getControl());
         }
-        string end(">>eob<<");
-        return end;
+        ln->first = NULL;
+        ln->second = NULL;
     }else{
-        std::string retLine("");
         if(currentFile->isRest()){
-            retLine.insert(0,currentFile->getBufRest());
+            tmp = new string();
+            tmp->insert(0,currentFile->getBufRest());
+            tmp->append(current,next-current);
+            ln->first = (char *) tmp->c_str();
+            ln->second = (char *) tmp->c_str()+tmp->length();
+        }else{
+            ln->first = current;
+            ln->second = next;
         }
-        retLine.append(current,next-current);
         currentFile->plusLine();
-        //poniższa linia wypisuje na ekran kolejne zwracane linie
-        //std::cout << currentFile->getCurrentLine() << "\t" << retLine << std::endl;
-        return retLine;
     }
 
 }

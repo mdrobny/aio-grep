@@ -61,3 +61,20 @@ void ResultLine::clear()
     lineNum = 0;
     filename = "";
 }
+
+
+void ResultLine::setLine(char *b, char *e)
+{
+    begin = b;
+    end = e;
+}
+
+char * ResultLine::getBeginLine()
+{
+    return begin;
+}
+
+char * ResultLine::getEndLine()
+{
+    return end;
+}

@@ -16,8 +16,13 @@ private:
     std::string filename;
     std::vector<int_pair_t > occurences;
     int lineNum;
+    char * begin;
+    char * end;
 
 public:
+    void setLine(char * b, char * e);
+    char * getBeginLine();
+    char * getEndLine();
     ResultLine();
     void setLine(const std::string& str);
     const std::string& getLine() const;

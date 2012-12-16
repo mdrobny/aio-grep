@@ -12,6 +12,7 @@ public:
 
     DummyRegexFinder(char *str);
     virtual bool checkLine(ResultLine &line);
+    virtual bool checkLineChar(ResultLine &line);
     virtual void setRegex(std::string str);
 
 };

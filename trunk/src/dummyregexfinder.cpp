@@ -27,6 +27,27 @@ bool DummyRegexFinder::checkLine(ResultLine &line)
     //return false;
 }
 
+bool DummyRegexFinder::checkLineChar(ResultLine &line)
+{
+    const char* str = line.getBeginLine();
+    const char* tmp_str = line.getLine().c_str();
+    char * end = line.getEndLine();
+    char tmp = *end;
+    *end = '\0';
+
+    const char* pos = 0;
+    bool found = false;
+    while( (pos = strstr(str, rgx)) != NULL) {
+        int tmp = strlen(tmp_str) - strlen(pos);
+        int_pair_t occurence = std::make_pair(tmp, tmp + strlen(rgx));
+        line.addOccurence(occurence);
+        str = pos + strlen(rgx);
+        found = true;
+    }
+    *end = tmp;
+    return found;
+}
+
 void DummyRegexFinder::setRegex(std::string str)
 {
     rgx = str.c_str();
