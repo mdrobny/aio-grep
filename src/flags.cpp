@@ -9,14 +9,15 @@ Flags::Flags(int argc, char** argv){
 
     int opt;
     methodChar=0;
-    flagsChar=new char[1]; flagsChar[0]=0;
+    flagsChar=new char[2]; for(int i=0;i<2;i++) flagsChar[i]=0;
     bool flagGiven=false;
     char flagCaseInsensitivity=0;
 
     /*flag passed
      *'a' xor 's' xor 'm'
      *'i' - case insensitive
-     *'h' - show line numbers
+     *'n' - show line numbers
+     *'h' - file names
      */
     opterr=0; //no stderr
     while((opt=getopt(argc,argv,"samih")) !=-1){
@@ -31,8 +32,11 @@ Flags::Flags(int argc, char** argv){
         case 'i':
             flagCaseInsensitivity='i';
             break;
+        case 'n':
+            flagsChar[0]='n';
+            break;
         case 'h':
-            flagsChar[0]='h';
+            flagsChar[1]='h';
             break;
         case '?':
             std::cout<<"There's no flag '-"<<(char)optopt<<"'"<<std::endl;
