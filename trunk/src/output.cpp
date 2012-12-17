@@ -13,6 +13,7 @@
  */
 Output::Output(char methodChar, char *flagsChar) {
     flagLineNumbers=flagsChar[0];
+    flagFileNames=flagsChar[1];
     switch(methodChar){
         case 's':
             frMethod="synchronous"; break;
@@ -21,8 +22,7 @@ Output::Output(char methodChar, char *flagsChar) {
         case 'm':
             frMethod="mmap"; break;
     }
-
-    //frMethod=(methodChar=='a') ? "asynchronous" : "synchronous";
+    currentFileName=std::string("");
     totalOcc=0;
 }
 
@@ -36,8 +36,11 @@ void Output::printResult(ResultLine& l){
     int_pair_t* occ;    //array of pairs
     size_t nr;          //getNumberOfOccurences() value
 
-
-    //std::cout << "In file: " << l.getFilename() << "\n";
+    //file names
+    if(flagFileNames) {// && currentFileName.compare(l.getFilename())!=0){
+        std::cout << BLUE << l.getFilename() <<": "<<RESET;// << std::endl;
+        //currentFileName=l.getFilename();
+    }
     nr=l.getNumberOfOccurences();
     totalOcc+=nr;
 
@@ -70,7 +73,7 @@ void Output::printResult(ResultLine& l){
                  << l.getLine().substr(o.second) <<"\n";
 
     }
-    std::cout<<"\n"; //tests
+    //std::cout<<"\n"; //tests
 }
 
 void Output::printSummary(Timer& time){

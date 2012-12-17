@@ -13,6 +13,8 @@ public:
 
 private:
     char flagLineNumbers;
+    char flagFileNames;
+    std::string currentFileName;
     std::string frMethod; //tests
     int totalOcc;     //total occurences amount
 };
