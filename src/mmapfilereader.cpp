@@ -45,8 +45,13 @@ FileReader::ReadResult MmapFileReader::readLine(ResultLine& line){
         if(status<0) return FR_OPEN_FAILED;
         size=s.st_size;
 
-        mapped=(const char*) mmap(0,size,PROT_READ,MAP_PRIVATE,currentFile,0);
-        if(mapped==MAP_FAILED) return FR_OPEN_FAILED;
+        if(size>0){
+            mapped=(const char*) mmap(0,size,PROT_READ,MAP_PRIVATE,currentFile,0);
+            if(mapped==MAP_FAILED) {std::cout<<"map";return FR_OPEN_FAILED;}
+        } else {
+            eof=true;
+            return FR_BAD;
+        }
 
     } else {
 
