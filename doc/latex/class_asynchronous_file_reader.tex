@@ -1,0 +1,49 @@
+\hypertarget{class_asynchronous_file_reader}{\section{Asynchronous\-File\-Reader Class Reference}
+\label{class_asynchronous_file_reader}\index{Asynchronous\-File\-Reader@{Asynchronous\-File\-Reader}}
+}
+Inheritance diagram for Asynchronous\-File\-Reader\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_asynchronous_file_reader}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_asynchronous_file_reader_ae9012d3d6d8f9396a67cb9a58c263d0d}{{\bfseries Asynchronous\-File\-Reader} (int argc, char $\ast$$\ast$argv, \hyperlink{class_regex_finder}{Regex\-Finder} $\ast$rf)}\label{class_asynchronous_file_reader_ae9012d3d6d8f9396a67cb9a58c263d0d}
+
+\item 
+\hypertarget{class_asynchronous_file_reader_a708ad5d93f5c04b87d1075b1fbe073d4}{void {\bfseries change\-Bufsize} (int s)}\label{class_asynchronous_file_reader_a708ad5d93f5c04b87d1075b1fbe073d4}
+
+\item 
+\hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796f}{Read\-Result} \hyperlink{class_asynchronous_file_reader_afe3fc7c60e31729ac786596ad0c4deaf}{read\-Line} (\hyperlink{class_result_line}{Result\-Line} \&line)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_asynchronous_file_reader_afe3fc7c60e31729ac786596ad0c4deaf}{\index{Asynchronous\-File\-Reader@{Asynchronous\-File\-Reader}!read\-Line@{read\-Line}}
+\index{read\-Line@{read\-Line}!AsynchronousFileReader@{Asynchronous\-File\-Reader}}
+\subsubsection[{read\-Line}]{\setlength{\rightskip}{0pt plus 5cm}{\bf File\-Reader\-::\-Read\-Result} Asynchronous\-File\-Reader\-::read\-Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_asynchronous_file_reader_afe3fc7c60e31729ac786596ad0c4deaf}
+Reads line and checks if it maches regex, automatically opens next files. 
+\begin{DoxyParams}{Parameters}
+{\em line} & reference to object that will hold currently read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+status from Read\-Result enum. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_file_reader_aa5e7dfefb3249a68497e40ddc0fd37f8}{File\-Reader}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/asynchronousfilereader.\-h\item 
+src/asynchronousfilereader.\-cpp\end{DoxyCompactItemize}

@@ -1,0 +1,100 @@
+\hypertarget{class_regex_finder}{\section{Regex\-Finder Class Reference}
+\label{class_regex_finder}\index{Regex\-Finder@{Regex\-Finder}}
+}
+
+
+Abstract regex finder class. This class specifies interface that all other regex classes should implement.  
+
+
+
+
+{\ttfamily \#include $<$regexfinder.\-h$>$}
+
+Inheritance diagram for Regex\-Finder\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_regex_finder}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual bool \hyperlink{class_regex_finder_ab72d3c59f8eacf728a81c1229743aa8e}{check\-Line} (\hyperlink{class_result_line}{Result\-Line} \&line)=0
+\begin{DoxyCompactList}\small\item\em Executes regex matching operations on current line, based on std\-::string. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_regex_finder_a4a22c2f90f8f87f5ac4d70b296d9b3e2}{check\-Line\-Char} (\hyperlink{class_result_line}{Result\-Line} \&line)=0
+\begin{DoxyCompactList}\small\item\em Executes regex matching operations on current line, based on char$\ast$. See. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_regex_finder_a7f98a20744f2074cff5dbd956ae832e4}{set\-Regex} (std\-::string r)=0
+\begin{DoxyCompactList}\small\item\em Sets the current expression. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract regex finder class. This class specifies interface that all other regex classes should implement. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_regex_finder_ab72d3c59f8eacf728a81c1229743aa8e}{\index{Regex\-Finder@{Regex\-Finder}!check\-Line@{check\-Line}}
+\index{check\-Line@{check\-Line}!RegexFinder@{Regex\-Finder}}
+\subsubsection[{check\-Line}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Regex\-Finder\-::check\-Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_regex_finder_ab72d3c59f8eacf728a81c1229743aa8e}
+
+
+Executes regex matching operations on current line, based on std\-::string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em line} & line to be matched against \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there has been a match, false otherwise 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{class_dummy_regex_finder_a8948007dfcb2faf9d2da2d411e8d7b2a}{Dummy\-Regex\-Finder}.
+
+\hypertarget{class_regex_finder_a4a22c2f90f8f87f5ac4d70b296d9b3e2}{\index{Regex\-Finder@{Regex\-Finder}!check\-Line\-Char@{check\-Line\-Char}}
+\index{check\-Line\-Char@{check\-Line\-Char}!RegexFinder@{Regex\-Finder}}
+\subsubsection[{check\-Line\-Char}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool Regex\-Finder\-::check\-Line\-Char (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_regex_finder_a4a22c2f90f8f87f5ac4d70b296d9b3e2}
+
+
+Executes regex matching operations on current line, based on char$\ast$. See. 
+
+\begin{DoxySeeAlso}{See Also}
+\{\hyperlink{class_regex_finder_ab72d3c59f8eacf728a81c1229743aa8e}{Regex\-Finder\-::check\-Line}\} 
+\end{DoxySeeAlso}
+
+
+Implemented in \hyperlink{class_dummy_regex_finder_aa6f38077d53d03f4ccfeb1a541931ae5}{Dummy\-Regex\-Finder}.
+
+\hypertarget{class_regex_finder_a7f98a20744f2074cff5dbd956ae832e4}{\index{Regex\-Finder@{Regex\-Finder}!set\-Regex@{set\-Regex}}
+\index{set\-Regex@{set\-Regex}!RegexFinder@{Regex\-Finder}}
+\subsubsection[{set\-Regex}]{\setlength{\rightskip}{0pt plus 5cm}virtual void Regex\-Finder\-::set\-Regex (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{r}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_regex_finder_a7f98a20744f2074cff5dbd956ae832e4}
+
+
+Sets the current expression. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & new expression \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{class_dummy_regex_finder_ab1c0df0a928af04459f339f483243ce0}{Dummy\-Regex\-Finder}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/regexfinder.\-h\item 
+src/regexfinder.\-cpp\end{DoxyCompactItemize}
