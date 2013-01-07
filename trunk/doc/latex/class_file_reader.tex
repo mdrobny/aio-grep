@@ -1,0 +1,134 @@
+\hypertarget{class_file_reader}{\section{File\-Reader Class Reference}
+\label{class_file_reader}\index{File\-Reader@{File\-Reader}}
+}
+
+
+Abstract file reader class. Specifies a common interface for all file readers implementations.  
+
+
+
+
+{\ttfamily \#include $<$filereader.\-h$>$}
+
+Inheritance diagram for File\-Reader\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_file_reader}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796f}{Read\-Result} \{ {\bfseries F\-R\-\_\-\-G\-O\-O\-D}, 
+\hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fae9f73ad13d7812bd5c4d0e6bd4c98757}{F\-R\-\_\-\-B\-A\-D}, 
+\hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fa677d417bbb7f32f5fc9c07717bf7a036}{F\-R\-\_\-\-N\-O\-\_\-\-M\-O\-R\-E}, 
+\hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fa2d89c82783e7e6491174d0c1a1302ffe}{F\-R\-\_\-\-O\-P\-E\-N\-\_\-\-F\-A\-I\-L\-E\-D}
+ \}
+\begin{DoxyCompactList}\small\item\em Indicates the status of file reader. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_file_reader_a615dcb2443cad1f2ca123c7c0c334480}{\hyperlink{class_file_reader_a615dcb2443cad1f2ca123c7c0c334480}{File\-Reader} ()}\label{class_file_reader_a615dcb2443cad1f2ca123c7c0c334480}
+
+\begin{DoxyCompactList}\small\item\em Empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_file_reader_addc591dc8120f70da096ffd3365071b9}{File\-Reader} (int argc, char $\ast$$\ast$argv, \hyperlink{class_regex_finder}{Regex\-Finder} $\ast$\&rf)
+\begin{DoxyCompactList}\small\item\em Initializes object to perform reading. \end{DoxyCompactList}\item 
+virtual \hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796f}{Read\-Result} \hyperlink{class_file_reader_aa5e7dfefb3249a68497e40ddc0fd37f8}{read\-Line} (\hyperlink{class_result_line}{Result\-Line} \&line)=0
+\item 
+virtual void \hyperlink{class_file_reader_a5ddc14179401245f69f75ef32610132d}{set\-Regex\-Finder} (\hyperlink{class_regex_finder}{Regex\-Finder} $\ast$\&reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_file_reader_af8ad2862e80be4d46ee35570db428f3c}{\hyperlink{class_regex_finder}{Regex\-Finder} $\ast$ \hyperlink{class_file_reader_af8ad2862e80be4d46ee35570db428f3c}{regex\-Finder}}\label{class_file_reader_af8ad2862e80be4d46ee35570db428f3c}
+
+\begin{DoxyCompactList}\small\item\em Pointer to regex finder object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract file reader class. Specifies a common interface for all file readers implementations. 
+
+\subsection{Member Enumeration Documentation}
+\hypertarget{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796f}{\index{File\-Reader@{File\-Reader}!Read\-Result@{Read\-Result}}
+\index{Read\-Result@{Read\-Result}!FileReader@{File\-Reader}}
+\subsubsection[{Read\-Result}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf File\-Reader\-::\-Read\-Result}}}\label{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796f}
+
+
+Indicates the status of file reader. 
+
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{F\-R\-\_\-\-B\-A\-D@{F\-R\-\_\-\-B\-A\-D}!File\-Reader@{File\-Reader}}\index{File\-Reader@{File\-Reader}!F\-R\-\_\-\-B\-A\-D@{F\-R\-\_\-\-B\-A\-D}}\item[{\em 
+\hypertarget{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fae9f73ad13d7812bd5c4d0e6bd4c98757}{F\-R\-\_\-\-B\-A\-D}\label{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fae9f73ad13d7812bd5c4d0e6bd4c98757}
+}]Line has been read and there is a match. \index{F\-R\-\_\-\-N\-O\-\_\-\-M\-O\-R\-E@{F\-R\-\_\-\-N\-O\-\_\-\-M\-O\-R\-E}!File\-Reader@{File\-Reader}}\index{File\-Reader@{File\-Reader}!F\-R\-\_\-\-N\-O\-\_\-\-M\-O\-R\-E@{F\-R\-\_\-\-N\-O\-\_\-\-M\-O\-R\-E}}\item[{\em 
+\hypertarget{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fa677d417bbb7f32f5fc9c07717bf7a036}{F\-R\-\_\-\-N\-O\-\_\-\-M\-O\-R\-E}\label{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fa677d417bbb7f32f5fc9c07717bf7a036}
+}]Line has been read and there is no match. \index{F\-R\-\_\-\-O\-P\-E\-N\-\_\-\-F\-A\-I\-L\-E\-D@{F\-R\-\_\-\-O\-P\-E\-N\-\_\-\-F\-A\-I\-L\-E\-D}!File\-Reader@{File\-Reader}}\index{File\-Reader@{File\-Reader}!F\-R\-\_\-\-O\-P\-E\-N\-\_\-\-F\-A\-I\-L\-E\-D@{F\-R\-\_\-\-O\-P\-E\-N\-\_\-\-F\-A\-I\-L\-E\-D}}\item[{\em 
+\hypertarget{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fa2d89c82783e7e6491174d0c1a1302ffe}{F\-R\-\_\-\-O\-P\-E\-N\-\_\-\-F\-A\-I\-L\-E\-D}\label{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796fa2d89c82783e7e6491174d0c1a1302ffe}
+}]There are no more lines in a file. Could not open current file \end{description}
+\end{Desc}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_file_reader_addc591dc8120f70da096ffd3365071b9}{\index{File\-Reader@{File\-Reader}!File\-Reader@{File\-Reader}}
+\index{File\-Reader@{File\-Reader}!FileReader@{File\-Reader}}
+\subsubsection[{File\-Reader}]{\setlength{\rightskip}{0pt plus 5cm}File\-Reader\-::\-File\-Reader (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$$\ast$}]{argv, }
+\item[{{\bf Regex\-Finder} $\ast$\&}]{rf}
+\end{DoxyParamCaption}
+)}}\label{class_file_reader_addc591dc8120f70da096ffd3365071b9}
+
+
+Initializes object to perform reading. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & number of files \\
+\hline
+{\em argv} & array of filenames \\
+\hline
+{\em rf} & pointer to initialized \hyperlink{class_regex_finder}{Regex\-Finder} object \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_file_reader_aa5e7dfefb3249a68497e40ddc0fd37f8}{\index{File\-Reader@{File\-Reader}!read\-Line@{read\-Line}}
+\index{read\-Line@{read\-Line}!FileReader@{File\-Reader}}
+\subsubsection[{read\-Line}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Read\-Result} File\-Reader\-::read\-Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{class_file_reader_aa5e7dfefb3249a68497e40ddc0fd37f8}
+Reads line and checks if it maches regex, automatically opens next files. 
+\begin{DoxyParams}{Parameters}
+{\em line} & reference to object that will hold currently read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+status from Read\-Result enum. 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{class_asynchronous_file_reader_afe3fc7c60e31729ac786596ad0c4deaf}{Asynchronous\-File\-Reader}, \hyperlink{class_synchronous_file_reader_a03ea3c5e6bd283b4a98b244edf2bd424}{Synchronous\-File\-Reader}, and \hyperlink{class_mmap_file_reader_acfc30ca58228b5ce38cf1db169aeadb0}{Mmap\-File\-Reader}.
+
+\hypertarget{class_file_reader_a5ddc14179401245f69f75ef32610132d}{\index{File\-Reader@{File\-Reader}!set\-Regex\-Finder@{set\-Regex\-Finder}}
+\index{set\-Regex\-Finder@{set\-Regex\-Finder}!FileReader@{File\-Reader}}
+\subsubsection[{set\-Regex\-Finder}]{\setlength{\rightskip}{0pt plus 5cm}void File\-Reader\-::set\-Regex\-Finder (
+\begin{DoxyParamCaption}
+\item[{{\bf Regex\-Finder} $\ast$\&}]{reg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_file_reader_a5ddc14179401245f69f75ef32610132d}
+Sets the current regex finder. 
+\begin{DoxyParams}{Parameters}
+{\em reg} & pointer to new \hyperlink{class_regex_finder}{Regex\-Finder} object \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/filereader.\-h\item 
+src/filereader.\-cpp\end{DoxyCompactItemize}

@@ -7,29 +7,55 @@
 #include "resultline.h"
 #include "regexfinder.h"
 
+///
+/// @class FileReader
+/// @brief Abstract file reader class.
+/// Specifies a common interface for all file readers implementations.
+///
 class FileReader
 {
 
 protected:
-    //! list of all files to be searched
-    //std::vector<std::string > fileList;
-
-    //! used temporarily as a substitude for real regex checking
+    ///
+    /// @brief Pointer to regex finder object.
+    ///
     RegexFinder* regexFinder;
 
 public:
-    //! empty constructor
+
+    ///
+    /// @brief Empty constructor.
+    ///
     FileReader(){}
-    //! puts filenames passed in commandline into fileList vector
+
+    ///
+    /// @brief Initializes object to perform reading.
+    /// @param argc number of files
+    /// @param argv array of filenames
+    /// @param rf pointer to initialized RegexFinder object
+    ///
     FileReader(int argc, char** argv, RegexFinder*& rf);
 
-    //! indicates if the regex has been matched in current line
-    enum ReadResult { FR_GOOD, FR_BAD, FR_NO_MORE, FR_OPEN_FAILED };
+    /// Indicates the status of file reader
+    enum ReadResult { FR_GOOD, /// Line has been read and there is a match
+                      FR_BAD,  /// Line has been read and there is no match
+                      FR_NO_MORE, /// There are no more lines in a file
+                      FR_OPEN_FAILED /// Could not open current file
+                    };
 
-    //! reads line and chechs if it maches regex, automatically opens files from fileList.
-    //! Files that have been processed are removed from fileList.
+    ///
+    /// Reads line and checks if it maches regex, automatically opens next files.
+    /// @param line reference to object that will hold currently read line
+    /// @returns status from ReadResult enum.
+    ///
     virtual ReadResult readLine(ResultLine& line) = 0;
+
+    ///
+    /// Sets the current regex finder.
+    /// @param reg pointer to new RegexFinder object
+    ///
     virtual void setRegexFinder(RegexFinder *&reg);
+
     virtual ~FileReader();
 
 };

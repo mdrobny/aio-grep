@@ -1,0 +1,103 @@
+\hypertarget{class_dummy_regex_finder}{\section{Dummy\-Regex\-Finder Class Reference}
+\label{class_dummy_regex_finder}\index{Dummy\-Regex\-Finder@{Dummy\-Regex\-Finder}}
+}
+
+
+Regex finder that implements strstr(...) function to compare line with expression. For informations about methods see \hyperlink{class_regex_finder}{Regex\-Finder} class.  
+
+
+
+
+{\ttfamily \#include $<$dummyregexfinder.\-h$>$}
+
+Inheritance diagram for Dummy\-Regex\-Finder\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_dummy_regex_finder}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_dummy_regex_finder_ab0fad30f0fc220c6186d6349d6179360}{{\bfseries Dummy\-Regex\-Finder} (char $\ast$str)}\label{class_dummy_regex_finder_ab0fad30f0fc220c6186d6349d6179360}
+
+\item 
+virtual bool \hyperlink{class_dummy_regex_finder_a8948007dfcb2faf9d2da2d411e8d7b2a}{check\-Line} (\hyperlink{class_result_line}{Result\-Line} \&line)
+\begin{DoxyCompactList}\small\item\em Executes regex matching operations on current line, based on std\-::string. \end{DoxyCompactList}\item 
+virtual bool \hyperlink{class_dummy_regex_finder_aa6f38077d53d03f4ccfeb1a541931ae5}{check\-Line\-Char} (\hyperlink{class_result_line}{Result\-Line} \&line)
+\begin{DoxyCompactList}\small\item\em Executes regex matching operations on current line, based on char$\ast$. See. \end{DoxyCompactList}\item 
+virtual void \hyperlink{class_dummy_regex_finder_ab1c0df0a928af04459f339f483243ce0}{set\-Regex} (std\-::string str)
+\begin{DoxyCompactList}\small\item\em Sets the current expression. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Regex finder that implements strstr(...) function to compare line with expression. For informations about methods see \hyperlink{class_regex_finder}{Regex\-Finder} class. 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_dummy_regex_finder_a8948007dfcb2faf9d2da2d411e8d7b2a}{\index{Dummy\-Regex\-Finder@{Dummy\-Regex\-Finder}!check\-Line@{check\-Line}}
+\index{check\-Line@{check\-Line}!DummyRegexFinder@{Dummy\-Regex\-Finder}}
+\subsubsection[{check\-Line}]{\setlength{\rightskip}{0pt plus 5cm}bool Dummy\-Regex\-Finder\-::check\-Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_dummy_regex_finder_a8948007dfcb2faf9d2da2d411e8d7b2a}
+
+
+Executes regex matching operations on current line, based on std\-::string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em line} & line to be matched against \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if there has been a match, false otherwise 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_regex_finder_ab72d3c59f8eacf728a81c1229743aa8e}{Regex\-Finder}.
+
+\hypertarget{class_dummy_regex_finder_aa6f38077d53d03f4ccfeb1a541931ae5}{\index{Dummy\-Regex\-Finder@{Dummy\-Regex\-Finder}!check\-Line\-Char@{check\-Line\-Char}}
+\index{check\-Line\-Char@{check\-Line\-Char}!DummyRegexFinder@{Dummy\-Regex\-Finder}}
+\subsubsection[{check\-Line\-Char}]{\setlength{\rightskip}{0pt plus 5cm}bool Dummy\-Regex\-Finder\-::check\-Line\-Char (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_dummy_regex_finder_aa6f38077d53d03f4ccfeb1a541931ae5}
+
+
+Executes regex matching operations on current line, based on char$\ast$. See. 
+
+\begin{DoxySeeAlso}{See Also}
+\{\hyperlink{class_regex_finder_ab72d3c59f8eacf728a81c1229743aa8e}{Regex\-Finder\-::check\-Line}\} 
+\end{DoxySeeAlso}
+
+
+Implements \hyperlink{class_regex_finder_a4a22c2f90f8f87f5ac4d70b296d9b3e2}{Regex\-Finder}.
+
+\hypertarget{class_dummy_regex_finder_ab1c0df0a928af04459f339f483243ce0}{\index{Dummy\-Regex\-Finder@{Dummy\-Regex\-Finder}!set\-Regex@{set\-Regex}}
+\index{set\-Regex@{set\-Regex}!DummyRegexFinder@{Dummy\-Regex\-Finder}}
+\subsubsection[{set\-Regex}]{\setlength{\rightskip}{0pt plus 5cm}void Dummy\-Regex\-Finder\-::set\-Regex (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{r}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_dummy_regex_finder_ab1c0df0a928af04459f339f483243ce0}
+
+
+Sets the current expression. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r} & new expression \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_regex_finder_a7f98a20744f2074cff5dbd956ae832e4}{Regex\-Finder}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{dummyregexfinder_8h}{dummyregexfinder.\-h}\item 
+src/dummyregexfinder.\-cpp\end{DoxyCompactItemize}

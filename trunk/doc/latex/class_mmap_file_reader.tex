@@ -1,0 +1,52 @@
+\hypertarget{class_mmap_file_reader}{\section{Mmap\-File\-Reader Class Reference}
+\label{class_mmap_file_reader}\index{Mmap\-File\-Reader@{Mmap\-File\-Reader}}
+}
+Inheritance diagram for Mmap\-File\-Reader\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_mmap_file_reader}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_mmap_file_reader_aee7070c7d8242bf451a72de1cc6261ba}{{\bfseries Mmap\-File\-Reader} (int argc, char $\ast$$\ast$argv, \hyperlink{class_regex_finder}{Regex\-Finder} $\ast$\&rf)}\label{class_mmap_file_reader_aee7070c7d8242bf451a72de1cc6261ba}
+
+\item 
+\hyperlink{class_file_reader_a8e801198c62f657dd1dff8fd8dbe796f}{Read\-Result} \hyperlink{class_mmap_file_reader_acfc30ca58228b5ce38cf1db169aeadb0}{read\-Line} (\hyperlink{class_result_line}{Result\-Line} \&line)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_mmap_file_reader_a4e59ccc0d490da5f3c0a741b87e89773}{std\-::string {\bfseries current\-File\-Name}}\label{class_mmap_file_reader_a4e59ccc0d490da5f3c0a741b87e89773}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_mmap_file_reader_acfc30ca58228b5ce38cf1db169aeadb0}{\index{Mmap\-File\-Reader@{Mmap\-File\-Reader}!read\-Line@{read\-Line}}
+\index{read\-Line@{read\-Line}!MmapFileReader@{Mmap\-File\-Reader}}
+\subsubsection[{read\-Line}]{\setlength{\rightskip}{0pt plus 5cm}{\bf File\-Reader\-::\-Read\-Result} Mmap\-File\-Reader\-::read\-Line (
+\begin{DoxyParamCaption}
+\item[{{\bf Result\-Line} \&}]{line}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{class_mmap_file_reader_acfc30ca58228b5ce38cf1db169aeadb0}
+Reads line and checks if it maches regex, automatically opens next files. 
+\begin{DoxyParams}{Parameters}
+{\em line} & reference to object that will hold currently read line \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+status from Read\-Result enum. 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_file_reader_aa5e7dfefb3249a68497e40ddc0fd37f8}{File\-Reader}.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/mmapfilereader.\-h\item 
+src/mmapfilereader.\-cpp\end{DoxyCompactItemize}

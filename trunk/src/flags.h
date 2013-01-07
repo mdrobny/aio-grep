@@ -7,8 +7,6 @@
 #include "regexfinder.h"
 
 #include "dummyregexfinder.h"
-#include "boostregexfinder.h"
-#include "re2regexfinder.h"
 
 #include <unistd.h>     //getoption function
 

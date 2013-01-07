@@ -20,11 +20,11 @@ private:
     char * end;
 
 public:
-    void setLine(char * b, char * e);
     char * getBeginLine();
     char * getEndLine();
     ResultLine();
     void setLine(const std::string& str);
+    void setLine(char * b, char * e);
     const std::string& getLine() const;
     void addOccurence(int_pair_t occ);
     const std::pair<int, int>& getOccurence(int which) const;
