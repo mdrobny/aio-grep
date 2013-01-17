@@ -1,3 +1,16 @@
+///
+///      @file  asynchronousfilereader.h
+///     @brief  File reader that performs asynchronous reading.
+/// This file reader uses aio.h library to read files. Reading files doesn't block program. Use mainly pointer to char.
+///
+///
+///    @author  Marcin Piłat, reynev@gmail.com
+///
+/// This source code is released for free distribution under the terms of the
+/// GNU General Public License as published by the Free Software Foundation.
+///=====================================================================================
+///
+
 #ifndef ASYNCHRONOUSFILEREADER_H
 #define ASYNCHRONOUSFILEREADER_H
 
@@ -37,9 +50,19 @@ class AsynchronousFileReader : public FileReader
     aiocb * prepareAioStruct(const char *, void *, aiocb *aio);
     void switchFile(list<FileInfo>::iterator fi);
 public:
+    ///
+    /// @brief Constructor
+    /// Allocate memory for buffers, create list of files, initiate reading files.
+    ///
     AsynchronousFileReader(int argc, char** argv, RegexFinder *rf);
+    ///
+    /// @brief Destructor
+    /// Free allocated memory.
+    ///
     ~AsynchronousFileReader();
-    void changeBufsize(int s){ bufsize = s;}
+    ///
+    /// @brief @see{FileReader}
+    ///
     ReadResult readLine(ResultLine& line);
 
 };
