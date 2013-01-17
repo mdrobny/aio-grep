@@ -6,7 +6,7 @@ AsynchronousFileReader::AsynchronousFileReader(int argc, char **argv, RegexFinde
     _argc = argc;
     _argv = argv;
     regexFinder = rf;
-    int fileDesLimit = 1021;
+    int fileDesLimit = 100;
     int aioListSize = argc-2;
     if(argc - 2 > fileDesLimit)
         aioListSize = fileDesLimit;
@@ -71,7 +71,6 @@ AsynchronousFileReader::~AsynchronousFileReader()
     free(aioList);
     free(generalBuf);
     delete ln;
-    //free(generalAio);
 }
 
 FileReader::ReadResult AsynchronousFileReader::readLine(ResultLine &line)
