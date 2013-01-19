@@ -22,7 +22,8 @@ Agrep::Agrep(int argc, char **argv){
 
 
     }
-    output.printSummary(time);
+    if(flagManager.getPrintSummaryFlag())
+		output.printSummary(time);
 
 }
 

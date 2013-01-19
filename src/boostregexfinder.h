@@ -14,6 +14,7 @@ public:
     BoostRegexFinder();
     BoostRegexFinder(std::string r);
     virtual bool checkLine(ResultLine& line);
+    virtual bool checkLineChar(ResultLine& line);
     virtual void setRegex(std::string r);
     virtual ~BoostRegexFinder();
 };
