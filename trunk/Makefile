@@ -6,11 +6,11 @@ OBJS=objs/resultline.o objs/timer.o objs/mmapfilereader.o objs/main.o objs/filer
 
 
 .PHONY: all
-all: objs a.out
+all: objs aio-grep
 
-./a.out: $(OBJS)
-	@ echo "    LINK ./a.out"
-	@ $(CXX) $(OBJS) -o "./a.out" $(LFLAGS)
+./aio-grep: $(OBJS)
+	@ echo "    LINK ./aio-grep"
+	@ $(CXX) $(OBJS) -o "./aio-grep" $(LFLAGS)
 
 objs/resultline.o: src/resultline.cpp src/resultline.h
 	@ echo "    CXX  src/resultline.cpp"
@@ -78,7 +78,7 @@ objs:
 c: clean
 clean:
 	@ if [ -d "objs" ]; then rm -r "objs"; fi
-	@ rm -f "./a.out"
+	@ rm -f "./aio-grep"
 	@ echo "    CLEAN"
 .PHONY: f fresh
 f: fresh
@@ -87,7 +87,7 @@ fresh: clean
 .PHONY: r run
 r: run
 run: all
-	@ ././a.out
+	@ ././aio-grep
 
 .PHONY: d debug
 d: debug

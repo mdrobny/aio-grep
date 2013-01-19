@@ -30,6 +30,7 @@ private:
     FileReader* fr;
     bool printSummary;
     bool colorLines;
+    void printHelpAndExit();
 
 };
 
