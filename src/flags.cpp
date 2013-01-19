@@ -14,6 +14,7 @@ Flags::Flags(int argc, char** argv){
     char flagCaseInsensitivity=0;
     char regexFinderType = 'd';
     printSummary = false;
+    colorLines = false;
 
     /*flag passed
      *'a' xor 's' xor 'm'
@@ -25,7 +26,7 @@ Flags::Flags(int argc, char** argv){
      * 'x' - print summary, default false
      */
     opterr=0; //no stderr
-    while((opt=getopt(argc,argv,"samihbdx")) !=-1){
+    while((opt=getopt(argc,argv,"samihbdxc")) !=-1){
         if(opt=='s' && methodChar==0){
             methodChar='s';
         } else if(opt=='a' && methodChar==0){
@@ -54,6 +55,9 @@ Flags::Flags(int argc, char** argv){
 			break;
 		case 'x':
 			printSummary=true;
+			break;
+		case 'c':
+			colorLines=true;
 			break;
         default:
               ;
@@ -110,7 +114,10 @@ bool Flags::getPrintSummaryFlag()
 {
 	return printSummary;
 }
-
+bool Flags::getColorLines()
+{
+	return colorLines;
+}
 Flags::~Flags(){
     delete fr;
     delete rf;
