@@ -6,7 +6,9 @@
  *            FileReader object
  */
 Flags::Flags(int argc, char** argv){
-
+    if(argc < 3){
+        printHelpAndExit();
+    }
     int opt;
     methodChar=0;
     flagsChar=new char[2]; for(int i=0;i<2;i++) flagsChar[i]=0;
@@ -24,9 +26,11 @@ Flags::Flags(int argc, char** argv){
      *'b' - boost regex finder
      *'d' - dummy regex finder (default)
      * 'x' - print summary, default false
+     * 'c' - colorize output
+     * 'u' - print help and exit
      */
     opterr=0; //no stderr
-    while((opt=getopt(argc,argv,"samihbdxc")) !=-1){
+    while((opt=getopt(argc,argv,"samihbdxcu")) !=-1){
         if(opt=='s' && methodChar==0){
             methodChar='s';
         } else if(opt=='a' && methodChar==0){
@@ -58,6 +62,9 @@ Flags::Flags(int argc, char** argv){
 			break;
 		case 'c':
 			colorLines=true;
+			break;
+		case 'u':
+			printHelpAndExit();
 			break;
         default:
               ;
@@ -122,4 +129,19 @@ Flags::~Flags(){
     delete fr;
     delete rf;
     delete flagsChar;
+}
+
+void Flags::printHelpAndExit()
+{
+	std::cout << "Usage: \n " 
+			  << "aio-grep " << "-[sam][bd]ihxcu <expression> <files>\n\n"
+			  << "\t Flags: \n"
+			  << "-[sam] - set search method, -s for synchronous (default), -a for asynchronous -m for mmap.\n"
+			  << "-[bd] - set regex handling type, -b for boost regex, -d for dummy string comparison (default). \n"
+			  << "-h - print file names\n-n - show line numbers \n"
+			  << "-x - print summary at the end (method used, total occurences, time processed in miliseconds) \n"
+			  << "-c - colorize output\n"
+			  << std::endl;
+	exit(1);
+			  
 }

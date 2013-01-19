@@ -35,6 +35,8 @@ Output::Output(char methodChar, char *flagsChar) {
  */
 void Output::printResult(ResultLine& l){
 
+	if(flagFileNames)
+		std::cout << l.getFilename() << ": \n";
     int nr=l.getNumberOfOccurences();
     totalOcc+=nr;
 	std::string tmp = l.getLine();
