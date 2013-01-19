@@ -8,7 +8,7 @@ Agrep::Agrep(int argc, char **argv){
     FileReader* fr=flagManager.getFileReader();  //fileReader
 
     Output output=Output(flagManager.methodChar,flagManager.flagsChar);
-
+	output.setColorLines(flagManager.getColorLines());
     ResultLine l;
     FileReader::ReadResult r;
     while((r = fr->readLine(l)) != FileReader::FR_NO_MORE) {

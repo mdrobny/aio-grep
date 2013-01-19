@@ -21,6 +21,7 @@ public:
     char methodChar; //passed to Output object
     char* flagsChar; //output flags passed to Output object
     bool getPrintSummaryFlag();
+    bool getColorLines();
 
 private:
     void correctArgs(int& argc, char** argv,int optind);
@@ -28,6 +29,7 @@ private:
     RegexFinder* rf;
     FileReader* fr;
     bool printSummary;
+    bool colorLines;
 
 };
 
