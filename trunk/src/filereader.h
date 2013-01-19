@@ -55,7 +55,7 @@ public:
     /// @param reg pointer to new RegexFinder object
     ///
     virtual void setRegexFinder(RegexFinder *&reg);
-
+    
     virtual ~FileReader();
 
 };

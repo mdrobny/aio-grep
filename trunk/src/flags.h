@@ -7,6 +7,7 @@
 #include "regexfinder.h"
 
 #include "dummyregexfinder.h"
+#include "boostregexfinder.h"
 
 #include <unistd.h>     //getoption function
 
@@ -19,12 +20,14 @@ public:
 
     char methodChar; //passed to Output object
     char* flagsChar; //output flags passed to Output object
+    bool getPrintSummaryFlag();
 
 private:
     void correctArgs(int& argc, char** argv,int optind);
-    RegexFinder* initRegexFinder(char *rgx);
+    RegexFinder* initRegexFinder(char *rgx, char type);
     RegexFinder* rf;
     FileReader* fr;
+    bool printSummary;
 
 };
 

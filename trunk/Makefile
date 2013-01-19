@@ -1,8 +1,8 @@
-# c563da1b41173170b1a077f5902748cb
+# 363fc217e4b72268182a2924478a3399
 CFLAGS=-O$(O) 
 O=2
-LFLAGS=-l rt
-OBJS=objs/resultline.o objs/timer.o objs/mmapfilereader.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/flags.o objs/agrep.o objs/regexfinder.o objs/output.o
+LFLAGS=-lrt -lboost_regex
+OBJS=objs/resultline.o objs/timer.o objs/mmapfilereader.o objs/main.o objs/filereader.o objs/dummyregexfinder.o objs/synchronousfilereader.o objs/fileinfo.o objs/asynchronousfilereader.o objs/flags.o objs/agrep.o objs/regexfinder.o objs/output.o objs/boostregexfinder.o
 
 
 .PHONY: all
@@ -67,6 +67,10 @@ objs/regexfinder.o: src/regexfinder.cpp src/regexfinder.h src/resultline.h
 objs/output.o: src/output.cpp src/output.h src/resultline.h src/timer.h
 	@ echo "    CXX  src/output.cpp"
 	@ $(CXX) $(CFLAGS) -c "src/output.cpp" -o $@
+objs/boostregexfinder.o: src/boostregexfinder.cpp src/boostregexfinder.h \
+ src/regexfinder.h src/resultline.h
+	@ echo "    CXX  src/boostregexfinder.cpp"
+	@ $(CXX) $(CFLAGS) -c "src/boostregexfinder.cpp" -o $@
 
 objs:
 	@ mkdir "objs"
