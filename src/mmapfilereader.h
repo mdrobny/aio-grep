@@ -10,12 +10,31 @@
 #include "resultline.h"
 #include <string.h>
 
+
+///
+/// @brief File reader that performs mmap reading.
+/// @author Michał Drobniak
+/// uses mmap() function from unistd.h to create a virtual file's map and works on it
+///
+/**
+ * sizeIterator - iterates to reach file's size
+ * lineEnd - position of last caught '\n' char
+ * eof - if sizeIterator reached size it's takes a true value
+ * currentFile - file descriptor
+ * size - file's size get from stats.h
+ * mapped - mapped file
+ **/
 class MmapFileReader : public FileReader
 {
 public:
     std::string currentFileName;
 
     MmapFileReader(int argc, char** argv, RegexFinder*& rf);
+    ///
+    /// @brief loads file statistics and create file's map
+    /// iterates char by char in virtual map
+    /// uses std::string
+    ///
     ReadResult readLine(ResultLine& line);
 
 private:

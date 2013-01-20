@@ -4,6 +4,13 @@
 #include "resultline.h"
 #include "timer.h"
 
+/*
+ * Output with printResult method
+ * flagLineNumbers, flagFileNames - flags
+ * currentFileName - used with flagFileNames if only one fileName for all ocurrencces needed
+ * frMethod - file reader method name printed in printSummary
+ * totalOcc - total amount of occurencess
+ */
 class Output
 {
 public:
