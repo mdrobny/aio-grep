@@ -7,6 +7,12 @@
 #include "resultline.h"
 #include "timer.h"
 
+///
+/// @class Agrep
+/// @author Michał Drobniak
+/// @brief Main program class that creates basic objects and has a main loop
+///
+
 class Agrep
 {
 public:
